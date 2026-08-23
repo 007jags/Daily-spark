@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Spark — your daily motivation</title>
+<meta name="theme-color" content="#1B2340">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Spark">
+<meta name="description" content="One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2340;
+    --ink-soft:#4A5578;
+    --dawn:#FF8F5E;
+    --glow:#FFD59E;
+    --mist:#F3F1FA;
+    --sage:#6F9282;
+    --paper:#FCFBF8;
+    --line: rgba(27,35,64,0.10);
+    --shadow: 0 20px 50px -25px rgba(27,35,64,0.35);
+    --radius: 22px;
+  }
+  :root[data-theme="dark"]{
+    --ink:#F2F0FA;
+    --ink-soft:#B7BBD9;
+    --mist:#1B1D2C;
+    --paper:#111220;
+    --line: rgba(255,255,255,0.10);
+    --shadow: 0 20px 50px -25px rgba(0,0,0,0.7);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+  .display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+
+  .theme-toggle{
+    position:fixed; top:18px; right:18px; z-index:50;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(20,22,40,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.20);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:18px; line-height:1;
+    transition:background 0.2s ease, transform 0.15s ease;
+  }
+  .theme-toggle:hover{background:rgba(20,22,40,0.78);}
+  .theme-toggle:active{transform:scale(0.94);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:64px 24px 48px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #2A3364 0%, #1B2340 42%, #141A31 100%);
+    color:#FCFBF8;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:38%;
+    background:linear-gradient(180deg, rgba(255,143,94,0) 0%, rgba(255,143,94,0.14) 55%, rgba(255,213,158,0.30) 100%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--glow);
+    margin-bottom:22px;
+    opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    font-weight:500;
+    line-height:1.04;
+    margin:0 0 16px;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--glow);
+  }
+  .hero p.sub{
+    font-size:17px;
+    color:rgba(252,251,248,0.72);
+    max-width:38ch;
+    margin:0 0 40px;
+    line-height:1.5;
+  }
+
+  /* breathing orb — signature element */
+  .orb-wrap{
+    position:relative;
+    width:150px; height:150px;
+    margin-bottom:44px;
+  }
+  .orb-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1px solid rgba(255,213,158,0.28);
+  }
+  .orb-ring.r2{inset:-22px; border-color:rgba(255,213,158,0.14);}
+  .orb{
+    position:absolute; inset:22px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFD59E 0%, #FF8F5E 55%, #E36B3F 100%);
+    box-shadow:0 0 60px 6px rgba(255,143,94,0.45);
+    animation:heroBreathe 6.5s ease-in-out infinite;
+  }
+  @keyframes heroBreathe{
+    0%,100%{transform:scale(0.86);}
+    50%{transform:scale(1.05);}
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color:rgba(252,251,248,0.5);
+    font-family:'IBM Plex Mono', monospace;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue::after{
+    content:"";
+    width:1px; height:26px;
+    background:linear-gradient(180deg, rgba(252,251,248,0.6), transparent);
+    animation:cueMove 2s ease-in-out infinite;
+  }
+  @keyframes cueMove{0%,100%{opacity:0.3;} 50%{opacity:1;}}
+
+  /* ---------- LAYOUT ---------- */
+  main{max-width:760px; margin:0 auto; padding:0 24px;}
+  section.card{
+    background:var(--mist);
+    border-radius:var(--radius);
+    padding:40px clamp(24px,5vw,56px);
+    margin-top:28px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--dawn);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .card-label .num{color:var(--ink-soft); opacity:0.5;}
+  h2.card-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.5rem, 3vw, 2rem);
+    margin:0 0 18px;
+    line-height:1.2;
+  }
+
+  /* Quote */
+  .quote-text{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.4rem, 3.4vw, 2rem);
+    line-height:1.42;
+    color:var(--ink);
+    margin:0 0 14px;
+  }
+  .quote-mark{color:var(--dawn); font-style:normal;}
+  .quote-hi{
+    font-family:'Noto Serif Devanagari', serif;
+    font-size:clamp(1.05rem, 2.4vw, 1.35rem);
+    color:var(--ink-soft);
+    line-height:1.65;
+    margin:0 0 16px;
+  }
+  .quote-source{
+    display:inline-block; font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; color:var(--sage);
+  }
+  .quote-actions{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;}
+
+  /* Speech */
+  .speech-meta{display:flex; gap:14px; align-items:center; margin-bottom:20px; flex-wrap:wrap;}
+  .time-badge{
+    background:var(--ink); color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; padding:6px 12px; border-radius:999px;
+  }
+  .speech-body{font-size:16.5px; line-height:1.75; color:var(--ink-soft);}
+  .speech-body p{margin:0 0 14px;}
+  .yt-link{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:18px; font-weight:600; font-size:14.5px;
+    color:var(--ink); text-decoration:none;
+    border-bottom:1.5px solid var(--dawn); padding-bottom:2px;
+  }
+
+  /* Breathing */
+  .breathe-grid{display:flex; flex-direction:column; align-items:center; gap:26px;}
+  .pattern-select{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  }
+  .pattern-btn{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:999px; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink-soft); cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .pattern-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .breathe-stage{
+    position:relative; width:220px; height:220px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .breathe-ring-static{position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line);}
+  .breathe-circle{
+    width:120px; height:120px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--glow), var(--sage) 90%);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 1s linear;
+    box-shadow:0 0 40px -6px rgba(111,146,130,0.6);
+  }
+  .breathe-phase{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:0.08em;
+  }
+  .breathe-controls{display:flex; gap:12px;}
+  .btn-primary{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 26px; border-radius:999px; border:none;
+    background:var(--ink); color:var(--paper); cursor:pointer;
+    transition:transform 0.15s ease, background 0.2s ease;
+  }
+  .btn-primary:hover{background:var(--sage);}
+  .btn-primary:active{transform:scale(0.97);}
+  .btn-ghost{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 22px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--ink-soft); cursor:pointer;
+  }
+
+  /* Chant */
+  .chant-row{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+  .chant-visual{
+    width:64px; height:64px; border-radius:50%;
+    background:radial-gradient(circle, var(--dawn), var(--ink) 120%);
+    flex-shrink:0;
+  }
+  .chant-visual.playing{animation:pulseChant 2.4s ease-in-out infinite;}
+  @keyframes pulseChant{0%,100%{box-shadow:0 0 0 0 rgba(255,143,94,0.35);} 50%{box-shadow:0 0 0 16px rgba(255,143,94,0);}}
+  .volume-row{display:flex; align-items:center; gap:10px; margin-top:18px;}
+  .volume-row input[type=range]{accent-color: var(--dawn); width:160px;}
+  .volume-row label{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono', monospace;}
+
+  /* Good thing */
+  .good-thing-text{font-size:17px; line-height:1.7; color:var(--ink); margin:0;}
+  .good-thing-tag{
+    display:inline-block; margin-top:20px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--sage); background:rgba(111,146,130,0.12);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  footer{
+    text-align:center; padding:70px 24px 60px; color:var(--ink-soft); font-size:13.5px;
+  }
+  footer .fdate{font-family:'IBM Plex Mono', monospace; letter-spacing:0.05em; margin-bottom:6px;}
+  .reload-btn{
+    margin-top:22px;
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    font-family:'Inter', sans-serif; font-size:13px; padding:9px 18px;
+    border-radius:999px; cursor:pointer;
+  }
+
+  @media (max-width:520px){
+    section.card{padding:30px 20px;}
+    .breathe-stage{width:190px; height:190px;}
+    .breathe-circle{width:100px; height:100px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+
+<div class="hero">
+  <div class="eyebrow" id="dateLabel">— loading —</div>
+  <div class="orb-wrap">
+    <div class="orb-ring"></div>
+    <div class="orb-ring r2"></div>
+    <div class="orb"></div>
+  </div>
+  <h1>Today, you get to<br><em>begin again.</em></h1>
+  <p class="sub">One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.</p>
+</div>
+
+<main>
+
+  <section class="card" id="quoteCard">
+    <div class="card-label"><span class="num">01</span> Today's wisdom</div>
+    <p class="quote-text"><span class="quote-mark">“</span><span id="quoteText"></span><span class="quote-mark">”</span></p>
+    <p class="quote-hi" id="quoteHi"></p>
+    <span class="quote-source" id="quoteSource"></span>
+    <div class="quote-actions">
+      <button class="btn-ghost" id="quoteShareBtn">Share as image</button>
+    </div>
+  </section>
+  <canvas id="shareCanvas" width="1080" height="1350" style="display:none;"></canvas>
+
+  <section class="card" id="speechCard">
+    <div class="card-label"><span class="num">02</span> Short spark</div>
+    <div class="speech-meta">
+      <h2 class="card-title" id="speechTitle" style="margin:0;"></h2>
+      <span class="time-badge" id="speechTime">4 min read</span>
+    </div>
+    <div class="speech-body" id="speechBody"></div>
+    <div class="quote-actions">
+      <button class="btn-primary" id="speechListenBtn">🔊 Listen</button>
+      <a class="yt-link" id="speechLink" href="#" target="_blank" rel="noopener">Find a full talk on this theme on YouTube ↗</a>
+    </div>
+  </section>
+
+  <section class="card" id="breatheCard">
+    <div class="card-label"><span class="num">03</span> Breathing exercise</div>
+    <h2 class="card-title">Give your nervous system sixty seconds</h2>
+    <div class="breathe-grid">
+      <div class="pattern-select" id="patternSelect"></div>
+      <div class="breathe-stage">
+        <div class="breathe-ring-static"></div>
+        <div class="breathe-circle" id="breatheCircle">
+          <span class="breathe-phase" id="breathePhase">ready</span>
+        </div>
+      </div>
+      <div class="breathe-controls">
+        <button class="btn-primary" id="breatheStart">Start breathing</button>
+        <button class="btn-ghost" id="breatheStop">Stop</button>
+      </div>
+      <div class="mono" id="cycleCount" style="font-size:12px; color:var(--ink-soft); opacity:0.7;"></div>
+    </div>
+  </section>
+
+  <section class="card" id="chantCard">
+    <div class="card-label"><span class="num">04</span> Chant &amp; calm tone</div>
+    <h2 class="card-title">A steady drone to settle into</h2>
+    <div class="chant-row">
+      <div class="chant-visual" id="chantVisual"></div>
+      <div>
+        <button class="btn-primary" id="chantToggle">Play tone</button>
+        <div class="volume-row">
+          <label for="chantVolume">VOLUME</label>
+          <input type="range" id="chantVolume" min="0" max="100" value="70">
+        </div>
+        <p style="font-size:12px; color:var(--ink-soft); opacity:0.75; margin:10px 0 0;">On iPhone: flip the side mute switch off and turn up media volume — the silent switch blocks web audio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="goodCard">
+    <div class="card-label"><span class="num">05</span> One good thing</div>
+    <h2 class="card-title">Somewhere, right now</h2>
+    <p class="good-thing-text" id="goodText"></p>
+    <span class="good-thing-tag">good news, every day</span>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fdate mono" id="footerDate"></div>
+  <div>Daily Spark refreshes automatically at midnight — bookmark this page and come back tomorrow.</div>
+  <div style="display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap;">
+    <button class="reload-btn" id="shuffleBtn">Shuffle today's picks</button>
+    <button class="reload-btn" id="shareBtn">Share Daily Spark</button>
+  </div>
+</footer>
+
+<script>
+/* ---------------- CONTENT LIBRARIES ---------------- */
+
+const QUOTES = [
+  // Ramayana
+  {text:"A promise kept quietly is worth more than a kingdom won loudly.", hi:"चुपचाप निभाया गया वचन, ज़ोर से जीते गए राज्य से कहीं अधिक मूल्यवान है।", source:"Ramayana"},
+  {text:"Devotion carries what strength alone cannot — ask the one who leapt an ocean for a friend.", hi:"भक्ति वह कर दिखाती है जो अकेला बल नहीं कर सकता — उससे पूछो जिसने मित्र के लिए सागर लांघ लिया।", source:"Ramayana · Hanuman"},
+  {text:"Exile is only geography. Dharma is where you stand, not where you're sent.", hi:"वनवास तो केवल स्थान है। धर्म वहाँ है जहाँ तुम खड़े हो, जहाँ भेजे गए हो वहाँ नहीं।", source:"Ramayana"},
+  {text:"The humble servant who remembers his purpose outlasts the powerful one who forgets his.", hi:"जो विनम्र सेवक अपने उद्देश्य को याद रखता है, वह उस शक्तिशाली से आगे निकल जाता है जो अपना उद्देश्य भूल जाता है।", source:"Ramayana · Hanuman"},
+  {text:"Even a prince can choose the forest over the throne, if the forest is where duty lives.", hi:"एक राजकुमार भी सिंहासन के बदले वन चुन सकता है, यदि कर्तव्य वहीं बसता हो।", source:"Ramayana"},
+  {text:"Loyalty isn't tested in comfort. It's tested in the years nobody is watching.", hi:"निष्ठा की परीक्षा सुख में नहीं होती। वह उन वर्षों में होती है जब कोई देख नहीं रहा होता।", source:"Ramayana"},
+  {text:"Patience isn't weakness — it's a different kind of unshakeable.", hi:"धैर्य कमज़ोरी नहीं है — यह एक भिन्न प्रकार की अडिगता है।", source:"Ramayana · Sita"},
+  {text:"What you carry for someone else's sake often reveals more strength than what you carry for your own.", hi:"जो बोझ तुम किसी और के लिए उठाते हो, वह अक्सर उस बोझ से अधिक शक्ति दिखाता है जो तुम अपने लिए उठाते हो।", source:"Ramayana"},
+
+  // Mahabharata / Bhagavad Gita
+  {text:"You have a right to your effort, never to the fruit of it — do the work, release the outcome.", hi:"तुम्हारा अधिकार केवल कर्म पर है, फल पर कभी नहीं — कर्म करो, परिणाम को छोड़ दो।", source:"Bhagavad Gita · Mahabharata"},
+  {text:"The mind is restless, but it becomes your friend the moment you stop fighting it and start training it.", hi:"मन चंचल है, पर जिस क्षण तुम उससे लड़ना छोड़कर उसे प्रशिक्षित करना शुरू करते हो, वह तुम्हारा मित्र बन जाता है।", source:"Bhagavad Gita · Mahabharata"},
+  {text:"Better to walk your own imperfect path than to imitate someone else's perfect one.", hi:"अपने अपूर्ण मार्ग पर चलना, किसी और के पूर्ण मार्ग की नकल करने से बेहतर है।", source:"Bhagavad Gita · Mahabharata"},
+  {text:"What is eternal in you was never born, and so it cannot be destroyed by what merely ends.", hi:"जो तुम्हारे भीतर शाश्वत है, वह कभी जन्मा ही नहीं, इसलिए जो समाप्त होता है वह उसे नष्ट नहीं कर सकता।", source:"Bhagavad Gita · Mahabharata"},
+  {text:"The steady stay steady in both victory and loss — not because they don't feel, but because they don't cling.", hi:"स्थिर मन जय और हार दोनों में स्थिर रहता है — इसलिए नहीं कि वह अनुभव नहीं करता, बल्कि इसलिए कि वह जकड़ता नहीं।", source:"Bhagavad Gita · Mahabharata"},
+  {text:"Doubt doesn't need to disappear before you act. It just needs a clearer purpose to move through.", hi:"कर्म करने से पहले संशय का मिटना ज़रूरी नहीं। उसे बस आगे बढ़ने के लिए एक स्पष्ट उद्देश्य चाहिए।", source:"Mahabharata · Arjuna"},
+  {text:"To act without knowing your own duty is to lose, whatever the outcome on the field.", hi:"अपने कर्तव्य को जाने बिना कर्म करना हार ही है, चाहे युद्धभूमि का परिणाम कुछ भी हो।", source:"Mahabharata"},
+  {text:"Small, steady duty done without ego outweighs grand ambition chasing applause.", hi:"अहंकार रहित होकर किया गया छोटा, स्थिर कर्तव्य, वाहवाही की चाह में की गई बड़ी महत्वाकांक्षा से भारी होता है।", source:"Bhagavad Gita · Mahabharata"},
+
+  // Buddhist / monk teachings
+  {text:"Pain is inevitable. The second arrow — the suffering we add on top of it — is optional.", hi:"पीड़ा अवश्यंभावी है। दूसरा तीर — जो दुख हम स्वयं उसमें जोड़ते हैं — वैकल्पिक है।", source:"Buddhist teaching"},
+  {text:"Everything begins in the mind. Train it well, and much of life follows.", hi:"सब कुछ मन से आरंभ होता है। उसे भली-भाँति प्रशिक्षित करो, और जीवन का बहुत कुछ स्वतः अनुसरण करेगा।", source:"Dhammapada · Buddhist teaching"},
+  {text:"You will not be punished for your anger — you will be punished by it.", hi:"तुम्हें क्रोध के लिए दंड नहीं मिलेगा — तुम्हें क्रोध के द्वारा ही दंड मिलेगा।", source:"Buddhist teaching"},
+  {text:"Nothing is permanent, not even the thing you're bracing yourself against right now.", hi:"कुछ भी स्थायी नहीं है, यहाँ तक कि वह भी नहीं जिसके लिए तुम अभी स्वयं को तैयार कर रहे हो।", source:"Buddhist teaching"},
+  {text:"Each morning, you are born again. What you do today matters most.", hi:"हर सुबह तुम्हारा नया जन्म होता है। आज तुम क्या करते हो, यही सबसे महत्वपूर्ण है।", source:"Buddhist teaching"},
+  {text:"Craving is a thirsty habit dressed up as a need. Notice it, and it loosens on its own.", hi:"तृष्णा एक प्यासी आदत है जो आवश्यकता का रूप धारण कर लेती है। उसे पहचानो, और वह स्वयं शिथिल हो जाएगी।", source:"Buddhist teaching"},
+  {text:"Walk gently, as if each step matters — some days, that's the whole practice.", hi:"धीरे चलो, मानो हर कदम मायने रखता हो — कुछ दिन, यही संपूर्ण साधना है।", source:"Zen teaching"},
+  {text:"Let go, or be dragged — the choice repeats itself all day, every day.", hi:"छोड़ दो, या घसीटे जाओ — यह चुनाव दिन भर, हर दिन दोहराता रहता है।", source:"Buddhist teaching"}
+];
+
+const SPEECHES = [
+ {
+  title:"The Five-Minute Rule",
+  time:"3 min read",
+  body:[
+   "There is a version of today where you do the hard thing first. Not because you feel like it, but because feeling like it was never going to arrive on schedule.",
+   "Most people wait for motivation the way they wait for a bus that isn't running today. Meanwhile the work sits there, patient, unbothered by your mood.",
+   "Try this instead: commit to five minutes. Not the whole task, not the whole workout, not the whole difficult conversation. Five minutes, and then you're allowed to stop.",
+   "Here's what actually happens — you rarely stop. The five minutes was never really about five minutes. It was about breaking the seal on starting, because starting is the only part your resistance was ever protecting.",
+   "So today, don't aim for finished. Aim for five minutes of honest effort. Let momentum handle the rest — it's better at this than willpower ever was."
+  ]
+ },
+ {
+  title:"Nobody Is Watching, Do It Anyway",
+  time:"3 min read",
+  body:[
+   "There's a strange kind of freedom in the fact that no one is tracking your effort as closely as you think they are.",
+   "The extra rep, the early wake-up, the page written when you didn't feel clever — nobody applauds those. They happen in private, logged only by you.",
+   "And that's exactly why they matter. Character isn't what you do for an audience. It's what you do when the only witness is the person you're becoming.",
+   "So do the unglamorous thing today. Not for the story you'll tell later, but for the quiet evidence you're building that you are someone who follows through."
+  ]
+ },
+ {
+  title:"Bad Days Still Count",
+  time:"2 min read",
+  body:[
+   "You will have days where the plan falls apart before ten in the morning. The workout gets skipped, the inbox wins, the good intentions dissolve by lunch.",
+   "Here is the part nobody tells you: a bad day inside a long streak is not a failure, it's just weather. It passes through, and tomorrow is still available to you.",
+   "The people who actually change their lives aren't the ones who never have a bad day. They're the ones who don't let one bad day become an identity.",
+   "So if today already went sideways — this is your permission slip. Do one small true thing before it ends, and call it a comeback, not a rescue."
+  ]
+ },
+ {
+  title:"The Compound Effect of Ordinary Days",
+  time:"4 min read",
+  body:[
+   "Nobody falls in love with the process on day one. Day one is awkward and slow and mostly just you figuring out where things are.",
+   "The magic isn't in the individual day — it's in the fact that day forty looks nothing like day one, even though neither felt remarkable while it was happening.",
+   "This is the part that trips people up: they judge the process by how it feels in the moment, instead of by what it's quietly building underneath.",
+   "A single workout doesn't change your body. A single page doesn't finish your book. A single hard conversation doesn't fix the relationship. But the fortieth one might, because it's standing on the shoulders of the first thirty-nine.",
+   "So stop asking whether today felt significant. Ask whether today was honest. Let the calendar handle significance — that's its job, not yours."
+  ]
+ },
+ {
+  title:"Fear Is Just Information",
+  time:"3 min read",
+  body:[
+   "Fear has a terrible reputation, mostly because we've confused it with danger. Most of what makes your palms sweat today isn't actually going to hurt you.",
+   "It's the presentation, the phone call, the decision you've been circling for weeks. None of that is a tiger. It's just uncertainty wearing a scary mask.",
+   "Here's a better way to read fear: it's a rough map of what matters to you. You don't feel nervous about things you don't care about.",
+   "So the next time your stomach tightens before doing the important thing, don't take it as a stop sign. Take it as confirmation you're finally pointed at something that counts."
+  ]
+ },
+ {
+  title:"Choose Your Hard",
+  time:"2 min read",
+  body:[
+   "Discipline is hard. Regret is also hard. Waking up early is hard. Staying stuck is also hard. There is no version of a meaningful life without some kind of hard in it.",
+   "The only real choice you get is which hard you're willing to carry — the temporary hard of doing the difficult thing, or the slow, compounding hard of avoiding it.",
+   "Most regret isn't about the things that went wrong. It's about the things that were never attempted, because the safer hard felt easier in the moment.",
+   "So pick your hard on purpose today. At least that one comes with a future you're proud of."
+  ]
+ },
+ {
+  title:"You Are Allowed to Start Over Today",
+  time:"2 min read",
+  body:[
+   "Somewhere along the way we started believing that consistency means never breaking the chain — that one missed day erases every day before it.",
+   "That's not how it works, and treating it that way is exactly why people quit after a single slip instead of just continuing.",
+   "A missed morning doesn't undo a month of mornings you showed up. It's just one square on a very long calendar.",
+   "So if you fell off — this is not a lecture, it's an invitation. Today counts exactly as much as day one did. Start there."
+  ]
+ },
+ {
+  title:"The Room You're Not In Yet",
+  time:"3 min read",
+  body:[
+   "There is a version of your life a few years out — a room you're not standing in yet, built entirely from decisions you haven't made.",
+   "Every rep, every early alarm, every hard conversation you have this year is a plank in the floor of that room. You won't see it take shape today. You rarely do.",
+   "This is the frustrating and beautiful part of building anything real: the payoff is almost always invisible in the moment it's earned.",
+   "So build the floor anyway. You're not doing today's work for today. You're doing it for the room you haven't walked into yet."
+  ]
+ }
+];
+
+const GOOD_THINGS = [
+"a stranger is quietly paying for the coffee of the person behind them in line, just because they can.",
+"a kid is learning to ride a bike for the first time, wobbling, laughing, and not falling nearly as much as they think they will.",
+"a nurse is finishing a double shift and still stopping to hold a scared patient's hand for one more minute than they had to.",
+"a neighbor is mowing the lawn of the elderly couple next door without being asked, and without expecting to be thanked.",
+"a scientist is one small, unglamorous experiment closer to a cure nobody will hear about for another decade.",
+"a teacher is staying twenty minutes late to explain one concept one more time, for the one student who needed it.",
+"someone is returning a lost wallet with every dollar still inside, because it never occurred to them to do anything else.",
+"a group of volunteers is planting trees that they know they'll never sit in the shade of.",
+"a rescue shelter is matching a nervous, overlooked animal with exactly the right person to finally call it home.",
+"a small business owner is giving a first-time employee a real chance nobody else would give them.",
+"a musician is busking on a street corner, and just made a stranger's rough day noticeably lighter.",
+"a farmer is donating the extra harvest instead of letting it go to waste.",
+"a group of strangers is forming a human chain to help a swimmer back to shore.",
+"a retired engineer is spending their weekend fixing wheelchairs for free, one bolt at a time.",
+"a language app somewhere just helped two people who don't share a language have their first real conversation.",
+"a community garden, planted by people who'd never met before, is about to have its first harvest.",
+"a kid is giving away half their lunch to a classmate without making it a thing.",
+"a hospital's newest wing just opened, funded entirely by neighbors who never met the patients it will help.",
+"a firefighter, off duty, just stopped to help a family change a tire in the rain.",
+"a library is quietly forgiving a decade of late fees so people stop avoiding it out of shame.",
+"a runner finishing last in a race is being cheered on by strangers just as loudly as the winner was.",
+"a group of engineers just shipped a small accessibility fix that will make someone's day genuinely easier.",
+"a grandparent is teaching a grandchild a recipe that would have otherwise been lost.",
+"a driver just let three extra cars merge in traffic instead of two, for no reason but kindness.",
+"a manager just gave credit publicly for an idea that wasn't theirs, because it was the right thing to do.",
+"someone is sitting with a coworker who's clearly having a hard day, just so they don't have to sit with it alone.",
+"a city crew fixed a pothole a full day ahead of schedule, and nobody will ever know their name for it.",
+"a child's crayon drawing is currently taped to a refrigerator somewhere, and it is, without question, someone's favorite piece of art.",
+"a group chat somewhere just planned a surprise for a friend who has no idea how loved they are.",
+"a person is finishing a long, quiet act of forgiveness that no one else will ever know about, and it's setting them free."
+];
+
+const BREATH_PATTERNS = {
+  box:    {label:"Box breathing", phases:[["Inhale",4],["Hold",4],["Exhale",4],["Hold",4]]},
+  calm478:{label:"4-7-8 calm", phases:[["Inhale",4],["Hold",7],["Exhale",8]]},
+  reset:  {label:"Quick reset", phases:[["Inhale",4],["Exhale",6]]}
+};
+
+/* ---------------- DATE-BASED ROTATION ---------------- */
+const dayIndex = Math.floor(Date.now() / 86400000);
+function pick(arr, seedOffset){ return arr[(dayIndex + seedOffset) % arr.length]; }
+
+const today = new Date();
+const dateStr = today.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+document.getElementById('dateLabel').textContent = dateStr.toUpperCase();
+document.getElementById('footerDate').textContent = dateStr;
+
+let quoteSeed = 0, speechSeed = 0, goodSeed = 0;
+let currentSpeechText = "";
+
+function renderQuote(){
+  const q = pick(QUOTES, quoteSeed);
+  document.getElementById('quoteText').textContent = q.text;
+  document.getElementById('quoteHi').textContent = q.hi || '';
+  document.getElementById('quoteSource').textContent = "— " + q.source;
+}
+function renderSpeech(){
+  const s = pick(SPEECHES, speechSeed);
+  document.getElementById('speechTitle').textContent = s.title;
+  document.getElementById('speechTime').textContent = s.time;
+  document.getElementById('speechBody').innerHTML = s.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('speechLink').href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(s.title + " inspirational talk");
+  currentSpeechText = s.title + ". " + s.body.join(' ');
+  if(window.speechSynthesis && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+  const listenBtn = document.getElementById('speechListenBtn');
+  if(listenBtn) listenBtn.textContent = "🔊 Listen";
+}
+function renderGood(){
+  document.getElementById('goodText').textContent = "Right now, " + pick(GOOD_THINGS, goodSeed);
+}
+renderQuote(); renderSpeech(); renderGood();
+
+/* ---------------- THEME TOGGLE ---------------- */
+(function themeInit(){
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  const saved = localStorage.getItem('ds_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('ds_theme', next);
+    applyTheme(next);
+  });
+})();
+
+/* ---------------- TEXT-TO-SPEECH FOR THE SPEECH CARD ---------------- */
+(function ttsInit(){
+  const listenBtn = document.getElementById('speechListenBtn');
+  if(!listenBtn) return;
+  let speaking = false;
+
+  function stopSpeaking(){
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+    speaking = false;
+    listenBtn.textContent = "🔊 Listen";
+  }
+
+  listenBtn.addEventListener('click', () => {
+    if(!('speechSynthesis' in window)){
+      listenBtn.textContent = "Not supported here";
+      setTimeout(() => { listenBtn.textContent = "🔊 Listen"; }, 2000);
+      return;
+    }
+    if(speaking){ stopSpeaking(); return; }
+    const utter = new SpeechSynthesisUtterance(currentSpeechText);
+    utter.rate = 0.95;
+    utter.pitch = 1;
+    utter.onend = () => { speaking = false; listenBtn.textContent = "🔊 Listen"; };
+    utter.onerror = () => { speaking = false; listenBtn.textContent = "🔊 Listen"; };
+    window.speechSynthesis.cancel(); // clear any queued utterances first
+    window.speechSynthesis.speak(utter);
+    speaking = true;
+    listenBtn.textContent = "⏸ Stop";
+  });
+})();
+
+/* ---------------- SHAREABLE QUOTE IMAGE ---------------- */
+(function shareImageInit(){
+  const btn = document.getElementById('quoteShareBtn');
+  if(!btn) return;
+
+  function wrapText(ctx, text, maxWidth){
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    words.forEach(w => {
+      const test = line ? line + ' ' + w : w;
+      if(ctx.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = w;
+      } else {
+        line = test;
+      }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  async function generateImage(){
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    await document.fonts.ready;
+
+    const bg = ctx.createRadialGradient(W/2, 0, W*0.1, W/2, H*0.55, H*0.95);
+    bg.addColorStop(0, '#2A3364');
+    bg.addColorStop(0.45, '#1B2340');
+    bg.addColorStop(1, '#12142A');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const glow = ctx.createLinearGradient(0, H*0.62, 0, H);
+    glow.addColorStop(0, 'rgba(255,143,94,0)');
+    glow.addColorStop(1, 'rgba(255,213,158,0.22)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, H*0.62, W, H*0.38);
+
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = '#FFD59E';
+    ctx.font = "600 26px 'IBM Plex Mono', monospace";
+    ctx.fillText('✨  D A I L Y   S P A R K', W/2, 130);
+
+    const englishText = '“' + document.getElementById('quoteText').textContent + '”';
+    const hiText = document.getElementById('quoteHi').textContent;
+    const sourceText = document.getElementById('quoteSource').textContent;
+    const maxWidth = W - 170;
+
+    ctx.fillStyle = '#FCFBF8';
+    ctx.font = "italic 500 52px 'Fraunces', serif";
+    const enLines = wrapText(ctx, englishText, maxWidth);
+
+    ctx.font = "500 34px 'Noto Serif Devanagari', serif";
+    const hiLines = hiText ? wrapText(ctx, hiText, maxWidth) : [];
+
+    const enLineHeight = 68;
+    const hiLineHeight = 52;
+    const blockGap = 34;
+    const sourceGap = 46;
+    const totalHeight = (enLines.length * enLineHeight) + (hiLines.length ? blockGap + hiLines.length * hiLineHeight : 0) + sourceGap;
+    let cursorY = (H/2) - (totalHeight/2);
+
+    ctx.fillStyle = '#FCFBF8';
+    ctx.font = "italic 500 52px 'Fraunces', serif";
+    enLines.forEach(line => { cursorY += enLineHeight; ctx.fillText(line, W/2, cursorY); });
+
+    if(hiLines.length){
+      cursorY += blockGap;
+      ctx.fillStyle = 'rgba(252,251,248,0.78)';
+      ctx.font = "500 34px 'Noto Serif Devanagari', serif";
+      hiLines.forEach(line => { cursorY += hiLineHeight; ctx.fillText(line, W/2, cursorY); });
+    }
+
+    cursorY += sourceGap;
+    ctx.fillStyle = '#9FD9BE';
+    ctx.font = "500 26px 'IBM Plex Mono', monospace";
+    ctx.fillText(sourceText, W/2, cursorY);
+
+    ctx.fillStyle = 'rgba(252,251,248,0.5)';
+    ctx.font = "500 20px 'IBM Plex Mono', monospace";
+    ctx.fillText('a five-minute daily reset', W/2, H - 64);
+
+    return canvas;
+  }
+
+  btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    btn.textContent = "Generating…";
+    btn.disabled = true;
+    try{
+      const canvas = await generateImage();
+      canvas.toBlob(async (blob) => {
+        if(!blob){ btn.textContent = original; btn.disabled = false; return; }
+        const file = new File([blob], 'daily-spark-quote.png', { type: 'image/png' });
+        let shared = false;
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          try{
+            await navigator.share({ files:[file], title:'Daily Spark', text: document.getElementById('quoteText').textContent });
+            shared = true;
+          }catch(e){ /* user cancelled the share sheet */ }
+        }
+        if(!shared){
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'daily-spark-quote.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+        btn.textContent = original;
+        btn.disabled = false;
+      }, 'image/png');
+    }catch(e){
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+})();
+
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  quoteSeed = Math.floor(Math.random()*1000);
+  speechSeed = Math.floor(Math.random()*1000);
+  goodSeed = Math.floor(Math.random()*1000);
+  renderQuote(); renderSpeech(); renderGood();
+});
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareData = {
+    title: "Daily Spark",
+    text: "A quiet five-minute reset — quote, breathing, and a good thing happening today.",
+    url: window.location.href
+  };
+  const btn = document.getElementById('shareBtn');
+  try{
+    if(navigator.share){
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      const original = btn.textContent;
+      btn.textContent = "Link copied!";
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+  } catch(e){ /* user cancelled share sheet — no action needed */ }
+});
+
+/* ---------------- BREATHING EXERCISE ---------------- */
+const patternSelect = document.getElementById('patternSelect');
+let currentPattern = 'box';
+Object.keys(BREATH_PATTERNS).forEach(key => {
+  const btn = document.createElement('button');
+  btn.className = 'pattern-btn' + (key === currentPattern ? ' active' : '');
+  btn.textContent = BREATH_PATTERNS[key].label;
+  btn.dataset.key = key;
+  btn.addEventListener('click', () => {
+    currentPattern = key;
+    [...patternSelect.children].forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    stopBreathing();
+  });
+  patternSelect.appendChild(btn);
+});
+
+const circle = document.getElementById('breatheCircle');
+const phaseLabel = document.getElementById('breathePhase');
+const cycleCountLabel = document.getElementById('cycleCount');
+let breatheTimer = null;
+let breathePhaseIdx = 0;
+let cycleCount = 0;
+
+function runBreathPhase(){
+  const pattern = BREATH_PATTERNS[currentPattern];
+  const [name, duration] = pattern.phases[breathePhaseIdx];
+  phaseLabel.textContent = name;
+  circle.style.transition = `transform ${duration}s ease-in-out`;
+  if(name === "Inhale") circle.style.transform = "scale(1.55)";
+  else if(name === "Exhale") circle.style.transform = "scale(0.7)";
+  breatheTimer = setTimeout(() => {
+    breathePhaseIdx = breathePhaseIdx + 1;
+    if(breathePhaseIdx >= pattern.phases.length){
+      breathePhaseIdx = 0;
+      cycleCount++;
+      cycleCountLabel.textContent = cycleCount === 1 ? "1 cycle complete" : `${cycleCount} cycles complete`;
+    }
+    runBreathPhase();
+  }, duration * 1000);
+}
+function startBreathing(){
+  stopBreathing();
+  breathePhaseIdx = 0;
+  cycleCount = 0;
+  cycleCountLabel.textContent = "";
+  runBreathPhase();
+}
+function stopBreathing(){
+  clearTimeout(breatheTimer);
+  circle.style.transition = "transform 0.6s ease";
+  circle.style.transform = "scale(1)";
+  phaseLabel.textContent = "ready";
+}
+document.getElementById('breatheStart').addEventListener('click', startBreathing);
+document.getElementById('breatheStop').addEventListener('click', stopBreathing);
+
+/* ---------------- CHANT / CALM TONE (Web Audio, generated) ---------------- */
+let audioCtx = null;
+let chantNodes = [];
+let chantPlaying = false;
+const chantBtn = document.getElementById('chantToggle');
+const chantVisual = document.getElementById('chantVisual');
+const volumeSlider = document.getElementById('chantVolume');
+
+function targetGain(){
+  return (volumeSlider.value / 100) * 0.5;
+}
+function startChant(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  // iOS/Safari suspends new audio contexts until explicitly resumed inside a user gesture.
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+
+  const masterGain = audioCtx.createGain();
+  const now = audioCtx.currentTime;
+  masterGain.gain.setValueAtTime(0, now);
+  masterGain.gain.linearRampToValueAtTime(targetGain(), now + 1.2); // fade in, avoids clicks
+  masterGain.connect(audioCtx.destination);
+
+  const freqs = [136.1, 204.15, 272.2]; // Om-style fundamental + harmonics
+  chantNodes = freqs.map((f, i) => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    const gain = audioCtx.createGain();
+    gain.gain.value = i === 0 ? 1 : 0.35;
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    return osc;
+  });
+  chantNodes.masterGain = masterGain;
+  chantPlaying = true;
+  chantBtn.textContent = "Stop tone";
+  chantVisual.classList.add('playing');
+}
+function stopChant(){
+  if(chantNodes.masterGain && audioCtx){
+    const now = audioCtx.currentTime;
+    const g = chantNodes.masterGain.gain;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(0, now + 0.4); // fade out, avoids clicks
+  }
+  const nodesToStop = chantNodes;
+  setTimeout(() => { nodesToStop.forEach(n => { try{ n.stop(); }catch(e){} }); }, 450);
+  chantNodes = [];
+  chantPlaying = false;
+  chantBtn.textContent = "Play tone";
+  chantVisual.classList.remove('playing');
+}
+chantBtn.addEventListener('click', () => { chantPlaying ? stopChant() : startChant(); });
+volumeSlider.addEventListener('input', () => {
+  if(chantNodes.masterGain && audioCtx) chantNodes.masterGain.gain.setTargetAtTime(targetGain(), audioCtx.currentTime, 0.05);
+});
+</script>
+</body>
+</html>
