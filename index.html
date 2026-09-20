@@ -271,6 +271,11 @@
   .volume-row label{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono', monospace;}
 
   /* Good thing */
+  .good-image-wrap{
+    width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden;
+    margin-bottom:22px; background:linear-gradient(135deg, var(--mist), var(--line));
+  }
+  .good-image-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
   .good-thing-text{font-size:17px; line-height:1.7; color:var(--ink); margin:0;}
   .good-thing-tag{
     display:inline-block; margin-top:20px;
@@ -327,13 +332,13 @@
     <div class="card-label"><span class="num">02</span> Short spark</div>
     <div class="speech-meta">
       <h2 class="card-title" id="speechTitle" style="margin:0;"></h2>
-      <span class="time-badge" id="speechTime">fresh from the web</span>
+      <span class="time-badge" id="speechTime">short read</span>
     </div>
     <div class="speech-body" id="speechBody"></div>
     <div class="quote-actions">
       <a class="yt-link" id="speechLink" href="#" target="_blank" rel="noopener">Find a full talk on this theme on YouTube ↗</a>
     </div>
-    <p class="source-note">Built fresh each visit from live quotes — never the same reading twice.</p>
+    <p class="source-note">One of 24 short reads — reshuffles without repeating for a while.</p>
   </section>
 
   <section class="card" id="breatheCard">
@@ -373,12 +378,14 @@
 
   <section class="card" id="goodCard">
     <div class="card-label"><span class="num">05</span> One good thing</div>
-    <h2 class="card-title" id="goodHeadline">Loading…</h2>
+    <div class="good-image-wrap"><img id="goodImage" alt="" /></div>
+    <h2 class="card-title" id="goodHeadline">Somewhere, right now</h2>
     <p class="good-thing-text" id="goodText"></p>
     <div class="quote-actions">
-      <a class="yt-link" id="goodLink" href="#" target="_blank" rel="noopener" style="display:none;">Read the full story ↗</a>
+      <a class="yt-link" id="goodLink" href="#" target="_blank" rel="noopener" style="display:none;">Read more on Wikipedia ↗</a>
     </div>
     <span class="good-thing-tag" id="goodTag">good news, every day</span>
+    <p class="source-note" id="goodImageCredit"></p>
   </section>
 
 </main>
@@ -520,84 +527,168 @@ const SPEECHES = [
    "This is the frustrating and beautiful part of building anything real: the payoff is almost always invisible in the moment it's earned.",
    "So build the floor anyway. You're not doing today's work for today. You're doing it for the room you haven't walked into yet."
   ]
+ },
+ {
+  title:"The Locksmith's Advice",
+  time:"3 min read",
+  body:[
+   "There's an old locksmith who says the same thing to every apprentice on their first day: a lock doesn't care how hard you turn the key. It only cares if you found the right one.",
+   "Most people push harder when something isn't working. Louder emails, longer hours, more willpower thrown at the same broken approach.",
+   "The locksmith's apprentices learn to stop and ask a different question instead: is this the wrong key, or the wrong amount of force?",
+   "Today, if something in your life feels like it's grinding against you, try that question before you try harder. Sometimes the fix isn't more effort. It's a different angle entirely."
+  ]
+ },
+ {
+  title:"What the Marathoner Knows",
+  time:"3 min read",
+  body:[
+   "Ask any marathoner about mile eighteen and they'll tell you the same thing: it's not the legs that give out first. It's the story you start telling yourself.",
+   "Somewhere around that point, the mind starts negotiating — maybe walk for a bit, maybe today isn't the day, maybe this was a mistake.",
+   "The ones who finish aren't the ones without that voice. They're the ones who've learned to keep moving while it talks.",
+   "Whatever mile eighteen looks like for you today — the project, the conversation, the hard decision — the voice negotiating with you isn't a signal to stop. It's just what mile eighteen sounds like. Keep moving anyway."
+  ]
+ },
+ {
+  title:"The Gardener Who Waited",
+  time:"2 min read",
+  body:[
+   "A gardener planted a bamboo seed and watered it every day for four years. Nothing happened. No stem, no leaf, nothing visible above the soil.",
+   "In the fifth year, the bamboo grew eighty feet in six weeks.",
+   "It wasn't dormant those four years. It was building a root system wide enough to support what was coming.",
+   "If your effort feels invisible right now, you might not be failing. You might be underground, doing the part of the work nobody gets to see."
+  ]
+ },
+ {
+  title:"Talk Like Someone Believes You",
+  time:"3 min read",
+  body:[
+   "There's a habit worth breaking: narrating your own life like a disappointed narrator. 'Of course this happened.' 'Typical.' 'Here we go again.'",
+   "You wouldn't talk to a friend that way after a setback. You'd remind them of the last five times they figured it out anyway.",
+   "Try being that friend to yourself today, even just once, even if it feels a little silly at first.",
+   "The tone you use with yourself isn't just commentary. It's instruction. Choose one that's actually trying to help you win."
+  ]
+ },
+ {
+  title:"The Understudy's Night",
+  time:"3 min read",
+  body:[
+   "An understudy waits backstage for years, knowing every line, every mark, every cue, for a role she may never actually play.",
+   "One night, the lead is sick. She goes on with four hours' notice and no rehearsal under the real lights.",
+   "Nobody in the audience knows the difference. She'd already done the work. The stage just finally matched it.",
+   "You might be preparing for something with no stage in sight yet. Keep learning the lines anyway. You don't get to choose when the call comes, only whether you're ready when it does."
+  ]
+ },
+ {
+  title:"The Weight You're Not Actually Carrying",
+  time:"2 min read",
+  body:[
+   "Most of what exhausts people isn't today's task. It's tomorrow's task, and next week's, and the one after that, all being carried at once, right now, for no reason.",
+   "Today only actually requires today. The rest is a preview you didn't need to buy a ticket for.",
+   "Put the rest down. You can pick each one up on its actual day, when it's actually due, with actual information about how to handle it.",
+   "One day, held properly, weighs a lot less than a month held all at once."
+  ]
+ },
+ {
+  title:"What the Cartographer Left Blank",
+  time:"3 min read",
+  body:[
+   "Old maps used to mark unexplored regions with a single honest phrase: here be dragons. Not because dragons were confirmed. Because nobody had checked yet.",
+   "Most fear works the same way — it's not a report from the territory, it's just an old warning about ground nobody in your life has actually walked.",
+   "The people who ended up charting those regions weren't fearless. They just treated the blank space as unknown, not as guaranteed danger.",
+   "Whatever blank space you're avoiding today, it's probably not full of dragons. It's just unmapped. Someone has to go first, and there's no rule saying it can't be you."
+  ]
+ },
+ {
+  title:"Sharpening the Axe",
+  time:"2 min read",
+  body:[
+   "A woodcutter given eight hours to fell a tree said he'd spend six of them sharpening the axe.",
+   "It sounds like it wastes time. It's actually the only version of the plan that isn't wasting time.",
+   "Most people skip the sharpening because swinging feels more like progress. It rarely is.",
+   "Before you swing at today's hardest task, ask if there's ten minutes of sharpening you're skipping — a plan, a clearer goal, a better tool. It's not a delay. It's usually the fastest way through."
+  ]
+ },
+ {
+  title:"The Lighthouse Doesn't Chase Ships",
+  time:"2 min read",
+  body:[
+   "A lighthouse never leaves its rock to go find the ships that need it. It just stays lit, exactly where it said it would be, and lets the ships come to it.",
+   "You don't have to chase every opportunity, every person, every version of approval that might be out there tonight.",
+   "Sometimes the strongest thing you can do is stay exactly where you are, doing the work honestly, and let the right things find their way to that light.",
+   "Be the lighthouse today. Not the ship."
+  ]
+ },
+ {
+  title:"The Apprentice Blacksmith",
+  time:"3 min read",
+  body:[
+   "An apprentice blacksmith ruined his first forty blades. His master never once told him to stop.",
+   "On the forty-first, something in his hands finally understood what his eyes had been watching for months. The blade held.",
+   "Nobody remembers the forty ruined ones. They only ever see the one that worked, and assume it was the first try.",
+   "Whatever you're bad at right now might just be blade thirty-one, not a sign to quit. Keep hitting the metal."
+  ]
+ },
+ {
+  title:"You Don't Owe an Explanation for Resting",
+  time:"2 min read",
+  body:[
+   "Somewhere along the way, rest started requiring a justification — you had to have earned it, deserved it, worked hard enough first.",
+   "Machines get maintenance without proving they've suffered enough to deserve it. You're allowed the same basic logic.",
+   "Resting isn't the opposite of ambition. It's usually the thing that makes tomorrow's ambition possible at all.",
+   "Rest today if you need it. You don't need a permission slip, and you definitely don't need a receipt."
+  ]
+ },
+ {
+  title:"The Two Wolves",
+  time:"2 min read",
+  body:[
+   "There's an old story about a grandfather telling his grandson that two wolves live inside every person — one fear, one courage — constantly fighting.",
+   "The grandson asks which one wins. The grandfather says: whichever one you feed.",
+   "It's a simple idea, but it holds up under pressure: your attention is food. Whatever thought you keep returning to today gets stronger by tonight.",
+   "Feed the wolf you actually want to win. It's listening to what you're choosing right now."
+  ]
+ },
+ {
+  title:"The Second Coat of Paint",
+  time:"2 min read",
+  body:[
+   "Anyone who's painted a wall knows the first coat always looks like a mistake — patchy, uneven, wrong colors bleeding through.",
+   "It's not a mistake. It's just the first coat. It was never supposed to be the finished wall.",
+   "A lot of first attempts get abandoned because they're judged like they were meant to be the last one.",
+   "Whatever you started today that looks patchy and uneven, it might just need its second coat, not a full repaint."
+  ]
+ },
+ {
+  title:"What the Night Shift Nurse Said",
+  time:"3 min read",
+  body:[
+   "A nurse who's worked night shifts for twenty years once said the hardest hour isn't midnight. It's four in the morning, when the body is most convinced the day will never come.",
+   "Her trick isn't motivation. It's arithmetic — she just counts down the hours she has left, one at a time, instead of measuring the whole shift at once.",
+   "Four hours feels impossible. Forty minutes feels doable. She's just doing forty minutes, eight times.",
+   "Whatever your four-in-the-morning is today, you don't have to survive the whole thing at once. Just the next forty minutes. Then the next."
+  ]
+ },
+ {
+  title:"The Cracked Pot",
+  time:"2 min read",
+  body:[
+   "A water carrier used two pots on a pole across her shoulders. One was perfect. The other had a crack and leaked half its water on every walk home.",
+   "The cracked pot apologized for years, ashamed of only ever delivering half a load.",
+   "One day the carrier showed it the path behind them — flowers, only on the cracked pot's side, watered the whole way without anyone trying.",
+   "Your cracks might be leaking exactly what someone else needed, without you ever noticing you were doing it."
+  ]
+ },
+ {
+  title:"The Only Deadline That's Real",
+  time:"2 min read",
+  body:[
+   "Most deadlines are borrowed anxiety — someone else's estimate of when something should be done, treated like a law of physics.",
+   "There's really only one deadline that's unmovable: today ends at midnight, whether or not you used it well.",
+   "That's not pressure. It's clarity. You don't have to solve the whole month by tonight. You just have to spend today honestly.",
+   "Let the bigger deadlines wait their turn. Today just needs today."
+  ]
  }
 ];
-
-// Builds a short "spark" reading out of 3 live quotes fetched from the web.
-// Each template weaves them together differently so repeat visits feel fresh
-// even before you factor in that the quotes themselves are never the same twice.
-const SPARK_TEMPLATES = [
-  (q) => ({
-    title: "Borrowed Clarity",
-    paragraphs: [
-      "Some mornings start with someone else's clarity before we find our own.",
-      `"${q[0].quote}" — ${q[0].author}`,
-      "Sit with that for a moment before you move on.",
-      `"${q[1].quote}" — ${q[1].author}`,
-      "Whatever you're circling today is smaller than the story you've built around it.",
-      `"${q[2].quote}" — ${q[2].author}`,
-      "Carry that into the next five minutes. That's the whole assignment."
-    ]
-  }),
-  (q) => ({
-    title: "Three Small Nudges",
-    paragraphs: [
-      "You don't need a big revelation today. You need three small nudges in the right direction.",
-      `First — "${q[0].quote}" — ${q[0].author}`,
-      `Second — "${q[1].quote}" — ${q[1].author}`,
-      `Third — "${q[2].quote}" — ${q[2].author}`,
-      "None of these are complicated. That's rather the point — the simple ones are usually the true ones."
-    ]
-  }),
-  (q) => ({
-    title: "A Short Reset",
-    paragraphs: [
-      "Before the day gets loud, here's a short reset — three lines borrowed from people who thought hard about exactly this.",
-      `"${q[0].quote}" — ${q[0].author}`,
-      `"${q[1].quote}" — ${q[1].author}`,
-      `"${q[2].quote}" — ${q[2].author}`,
-      "Pick whichever one landed. Let the others go. One is usually enough for one morning."
-    ]
-  }),
-  (q) => ({
-    title: "Steal This Thought",
-    paragraphs: [
-      `"${q[0].quote}" — ${q[0].author}`,
-      "That's worth stealing for today. Keep it somewhere you'll actually see it.",
-      `"${q[1].quote}" — ${q[1].author}`,
-      "And that one's worth stealing for the harder days — the ones a website can't fully prepare you for.",
-      `"${q[2].quote}" — ${q[2].author}`,
-      "Three borrowed thoughts. One ordinary day. That's usually plenty."
-    ]
-  }),
-  (q) => ({
-    title: "Five Minutes, Borrowed",
-    paragraphs: [
-      "Five minutes isn't much. It's just enough to borrow someone else's hard-earned clarity before the day asks you for your own.",
-      `"${q[0].quote}" — ${q[0].author}`,
-      `"${q[1].quote}" — ${q[1].author}`,
-      `"${q[2].quote}" — ${q[2].author}`,
-      "Whichever one you keep, keep it on purpose."
-    ]
-  })
-];
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str == null ? '' : String(str);
-  return div.innerHTML;
-}
-
-// Free, keyless, CORS-enabled quotes API — see https://dummyjson.com/docs/quotes
-async function fetchDynamicSpark(){
-  const res = await fetch('https://dummyjson.com/quotes/random/3');
-  if(!res.ok) throw new Error('bad response');
-  const quotes = await res.json();
-  if(!Array.isArray(quotes) || quotes.length < 3) throw new Error('unexpected shape');
-  const safeQuotes = quotes.map(q => ({ quote: escapeHtml(q.quote), author: escapeHtml(q.author) }));
-  const template = SPARK_TEMPLATES[Math.floor(Math.random() * SPARK_TEMPLATES.length)];
-  return template(safeQuotes);
-}
 
 const GOOD_THINGS = [
 "a stranger is quietly paying for the coffee of the person behind them in line, just because they can.",
@@ -632,30 +723,49 @@ const GOOD_THINGS = [
 "a person is finishing a long, quiet act of forgiveness that no one else will ever know about, and it's setting them free."
 ];
 
-// Real, live headlines from a free, keyless, CORS-enabled news API — see https://noozra.com/api
-// Search is biased toward uplifting keywords, and results are screened against a
-// negative-keyword list before anything is shown, since raw world news skews serious.
-const POSITIVE_TERMS = ['kindness','rescue','donate','community','celebrates','achievement','breakthrough','recovers','reunited','graduates','volunteer','hero','generous','charity','helps','saved','inspiring','milestone','discovery','cure'];
-const NEGATIVE_TERMS = ['war','dead','death','died','killed','kill','attack','shooting','shot','bomb','explosion','crash','disaster','abuse','murder','assault','crisis','famine','flood','earthquake','wildfire','conflict','violence','terror','hostage','riot','scandal','fraud','layoff','outbreak','pandemic','injured','injury','victim','tragedy','grief','mourn','sentenced','lawsuit','indicted','convicted','fatal','emergency','hospitalized','opioid','deported','imprisoned','corruption','arrest'];
+// "On this day in history" from Wikipedia's own REST API — the same production
+// infrastructure behind the official Wikipedia apps, so it's built for exactly
+// this kind of live client-side use (unlike smaller news aggregators, it's
+// genuinely CORS-enabled and has serious uptime behind it).
+// Selected events are pre-curated by Wikipedia editors for notability, and we
+// additionally skip anything with heavy war/disaster/death language so the
+// tone stays in keeping with the rest of the app.
+const HISTORY_NEGATIVE_TERMS = ['war','died','death','killed','kill','assassinat','massacre','genocide','bombing','bombed','earthquake','attack','disaster','plague','famine','execut','coup','invasion','invaded','battle','shot','shooting','terror','riot','uprising','revolt'];
 
-async function fetchGoodNews(){
-  const term = POSITIVE_TERMS[Math.floor(Math.random() * POSITIVE_TERMS.length)];
-  const res = await fetch('https://noozra.com/api/search?q=' + encodeURIComponent(term) + '&limit=20');
+async function fetchOnThisDay(){
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const res = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${mm}/${dd}`);
   if(!res.ok) throw new Error('bad response');
   const data = await res.json();
-  const list = data.articles || data.results || (Array.isArray(data) ? data : []);
-  const clean = list.filter(a => {
-    const text = ((a.headline || a.title || '') + ' ' + (a.description || '')).toLowerCase();
-    return !NEGATIVE_TERMS.some(neg => text.includes(neg));
+  const events = data.selected || [];
+  if(!events.length) throw new Error('no events');
+  const clean = events.filter(e => {
+    const text = (e.text || '').toLowerCase();
+    return !HISTORY_NEGATIVE_TERMS.some(neg => text.includes(neg));
   });
-  if(!clean.length) throw new Error('no clean results');
-  const item = clean[Math.floor(Math.random() * clean.length)];
-  return {
-    headline: escapeHtml(item.headline || item.title || 'Something good happened today'),
-    description: escapeHtml(item.description || ''),
-    source: escapeHtml(item.source || ''),
-    url: item.url || ''
-  };
+  const pool = clean.length ? clean : events;
+  const item = pool[Math.floor(Math.random() * pool.length)];
+  const page = item.pages && item.pages[0];
+  const url = page && page.content_urls && page.content_urls.desktop
+    ? page.content_urls.desktop.page
+    : (page && page.title ? 'https://en.wikipedia.org/wiki/' + encodeURIComponent(page.title) : '');
+  return { year: item.year, text: item.text, url };
+}
+
+// Picks a random entry while avoiding whatever was shown in the last few visits,
+// so nothing repeats noticeably even without any external content source.
+function pickFresh(arr, storageKey, historySize){
+  let history = [];
+  try{ history = JSON.parse(localStorage.getItem(storageKey) || '[]'); }catch(e){ history = []; }
+  let available = arr.map((_, i) => i).filter(i => !history.includes(i));
+  if(!available.length){ available = arr.map((_, i) => i); history = []; }
+  const chosen = available[Math.floor(Math.random() * available.length)];
+  history.push(chosen);
+  if(history.length > historySize) history.shift();
+  try{ localStorage.setItem(storageKey, JSON.stringify(history)); }catch(e){ /* storage unavailable — fine, just less variety tracking */ }
+  return arr[chosen];
 }
 
 const BREATH_PATTERNS = {
@@ -679,59 +789,79 @@ function renderQuote(){
   document.getElementById('quoteText').textContent = pick(QUOTES, quoteSeed);
 }
 
-async function renderSpeech(){
-  const titleEl = document.getElementById('speechTitle');
-  const timeEl = document.getElementById('speechTime');
-  const bodyEl = document.getElementById('speechBody');
-  const linkEl = document.getElementById('speechLink');
-
-  titleEl.textContent = "Fetching today's spark…";
-  timeEl.textContent = "";
-  bodyEl.innerHTML = '<p style="opacity:0.6;">Pulling something fresh from the web…</p>';
-
-  try{
-    const s = await fetchDynamicSpark();
-    titleEl.textContent = s.title;
-    timeEl.textContent = "fresh from the web";
-    bodyEl.innerHTML = s.paragraphs.map(p => `<p>${p}</p>`).join('');
-    linkEl.href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(s.title + " inspirational talk");
-  }catch(e){
-    // offline or the API is unreachable — fall back to a locally written reading
-    const s = SPEECHES[Math.floor(Math.random() * SPEECHES.length)];
-    titleEl.textContent = s.title;
-    timeEl.textContent = s.time;
-    bodyEl.innerHTML = s.body.map(p => `<p>${p}</p>`).join('');
-    linkEl.href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(s.title + " inspirational talk");
-  }
+function renderSpeech(){
+  const s = pickFresh(SPEECHES, 'ds_speech_history', 6);
+  document.getElementById('speechTitle').textContent = s.title;
+  document.getElementById('speechTime').textContent = s.time;
+  document.getElementById('speechBody').innerHTML = s.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('speechLink').href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(s.title + " inspirational talk");
 }
 
-async function renderGood(){
+async function renderGood(random){
   const headlineEl = document.getElementById('goodHeadline');
   const textEl = document.getElementById('goodText');
   const linkEl = document.getElementById('goodLink');
   const tagEl = document.getElementById('goodTag');
 
-  headlineEl.textContent = "Looking for something good…";
-  textEl.textContent = "Searching today's headlines for a story worth carrying with you.";
+  headlineEl.textContent = "Looking back at today…";
+  textEl.textContent = "Checking what happened on this day in history.";
   linkEl.style.display = 'none';
 
   try{
-    const news = await fetchGoodNews();
-    headlineEl.innerHTML = news.headline;
-    textEl.innerHTML = news.description;
-    if(news.url){
-      linkEl.href = news.url;
+    const item = await fetchOnThisDay();
+    headlineEl.textContent = "On this day in history";
+    textEl.textContent = `In ${item.year}, ${item.text}`;
+    if(item.url){
+      linkEl.href = item.url;
       linkEl.style.display = 'inline-flex';
-      linkEl.textContent = "Read the full story" + (news.source ? " — " + news.source : "") + " ↗";
+      linkEl.textContent = "Read more on Wikipedia ↗";
     }
-    tagEl.textContent = "from today's real headlines";
+    tagEl.textContent = "on this day, via Wikipedia";
   }catch(e){
-    // offline, rate-limited, or nothing uplifting turned up — fall back to a curated pick
+    // offline or the API hiccuped — fall back to a curated evergreen pick
     headlineEl.textContent = "Somewhere, right now";
-    textEl.textContent = GOOD_THINGS[Math.floor(Math.random() * GOOD_THINGS.length)];
+    textEl.textContent = "Right now, " + pickFresh(GOOD_THINGS, 'ds_good_history', 10);
     linkEl.style.display = 'none';
     tagEl.textContent = "good news, every day";
   }
+
+  loadGoodImage(!!random);
+}
+
+// Two-tier image source: NASA's Astronomy Picture of the Day when it's
+// available and actually an image (not every day is — some days are a
+// video), and Lorem Picsum — a dead-simple, extremely reliable image
+// service with no API/JSON involved at all — as the guaranteed fallback.
+// The <img> itself also has an onerror handler, so even a mid-load network
+// hiccup swaps to the fallback automatically instead of showing a broken image.
+function loadGoodImage(random){
+  const img = document.getElementById('goodImage');
+  const creditEl = document.getElementById('goodImageCredit');
+  const todaySeed = today.toISOString().slice(0, 10) + (random ? '-' + Math.floor(Math.random() * 100000) : '');
+  const fallbackSrc = `https://picsum.photos/seed/${todaySeed}/1080/720`;
+
+  img.onerror = () => {
+    img.onerror = null; // avoid any retry loop if the fallback itself ever fails
+    img.src = fallbackSrc;
+    creditEl.textContent = "Image via Lorem Picsum";
+  };
+
+  const apodUrl = 'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY' + (random ? '&count=1' : '');
+  fetch(apodUrl)
+    .then(res => { if(!res.ok) throw new Error('bad response'); return res.json(); })
+    .then(data => {
+      const item = Array.isArray(data) ? data[0] : data;
+      if(item && item.media_type === 'image' && item.url){
+        img.src = item.url;
+        creditEl.textContent = "NASA Astronomy Picture of the Day" + (item.title ? " — " + item.title : "");
+      } else {
+        throw new Error('no image today');
+      }
+    })
+    .catch(() => {
+      img.src = fallbackSrc;
+      creditEl.textContent = "Image via Lorem Picsum";
+    });
 }
 
 renderQuote(); renderSpeech(); renderGood();
@@ -862,7 +992,7 @@ renderQuote(); renderSpeech(); renderGood();
 
 document.getElementById('shuffleBtn').addEventListener('click', () => {
   quoteSeed = Math.floor(Math.random()*1000);
-  renderQuote(); renderSpeech(); renderGood();
+  renderQuote(); renderSpeech(); renderGood(true);
 });
 
 document.getElementById('shareBtn').addEventListener('click', async () => {
