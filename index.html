@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Spark — your daily motivation</title>
+<meta name="theme-color" content="#1B2340">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Spark">
+<meta name="description" content="One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2340;
+    --ink-soft:#4A5578;
+    --dawn:#FF8F5E;
+    --glow:#FFD59E;
+    --mist:#F3F1FA;
+    --sage:#6F9282;
+    --paper:#FCFBF8;
+    --line: rgba(27,35,64,0.10);
+    --shadow: 0 20px 50px -25px rgba(27,35,64,0.35);
+    --radius: 22px;
+  }
+  :root[data-theme="dark"]{
+    --ink:#F2F0FA;
+    --ink-soft:#B7BBD9;
+    --mist:#1B1D2C;
+    --paper:#111220;
+    --line: rgba(255,255,255,0.10);
+    --shadow: 0 20px 50px -25px rgba(0,0,0,0.7);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+  .display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+
+  .theme-toggle{
+    position:fixed; top:18px; right:18px; z-index:50;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(20,22,40,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.20);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:18px; line-height:1;
+    transition:background 0.2s ease, transform 0.15s ease;
+  }
+  .theme-toggle:hover{background:rgba(20,22,40,0.78);}
+  .theme-toggle:active{transform:scale(0.94);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:64px 24px 48px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #2A3364 0%, #1B2340 42%, #141A31 100%);
+    color:#FCFBF8;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:38%;
+    background:linear-gradient(180deg, rgba(255,143,94,0) 0%, rgba(255,143,94,0.14) 55%, rgba(255,213,158,0.30) 100%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--glow);
+    margin-bottom:22px;
+    opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    font-weight:500;
+    line-height:1.04;
+    margin:0 0 16px;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--glow);
+  }
+  .hero p.sub{
+    font-size:17px;
+    color:rgba(252,251,248,0.72);
+    max-width:38ch;
+    margin:0 0 40px;
+    line-height:1.5;
+  }
+
+  /* breathing orb — signature element */
+  .orb-wrap{
+    position:relative;
+    width:150px; height:150px;
+    margin-bottom:44px;
+  }
+  .orb-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1px solid rgba(255,213,158,0.28);
+  }
+  .orb-ring.r2{inset:-22px; border-color:rgba(255,213,158,0.14);}
+  .orb{
+    position:absolute; inset:22px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFD59E 0%, #FF8F5E 55%, #E36B3F 100%);
+    box-shadow:0 0 60px 6px rgba(255,143,94,0.45);
+    animation:heroBreathe 6.5s ease-in-out infinite;
+  }
+  @keyframes heroBreathe{
+    0%,100%{transform:scale(0.86);}
+    50%{transform:scale(1.05);}
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color:rgba(252,251,248,0.5);
+    font-family:'IBM Plex Mono', monospace;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue::after{
+    content:"";
+    width:1px; height:26px;
+    background:linear-gradient(180deg, rgba(252,251,248,0.6), transparent);
+    animation:cueMove 2s ease-in-out infinite;
+  }
+  @keyframes cueMove{0%,100%{opacity:0.3;} 50%{opacity:1;}}
+
+  /* ---------- LAYOUT ---------- */
+  main{max-width:760px; margin:0 auto; padding:0 24px;}
+  section.card{
+    background:var(--mist);
+    border-radius:var(--radius);
+    padding:40px clamp(24px,5vw,56px);
+    margin-top:28px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--dawn);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .card-label .num{color:var(--ink-soft); opacity:0.5;}
+  h2.card-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.5rem, 3vw, 2rem);
+    margin:0 0 18px;
+    line-height:1.2;
+  }
+
+  /* Quote */
+  .quote-text{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.4rem, 3.4vw, 2rem);
+    line-height:1.42;
+    color:var(--ink);
+    margin:0 0 14px;
+  }
+  .quote-mark{color:var(--dawn); font-style:normal;}
+  .quote-actions{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .source-note{font-size:12px; color:var(--ink-soft); opacity:0.7; margin:12px 0 0;}
+  .affirmation-text{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(1.6rem, 4.2vw, 2.4rem); line-height:1.3;
+    color:var(--ink); margin:0 0 14px; text-align:center;
+  }
+  .affirmation-hint{font-size:14px; color:var(--ink-soft); text-align:center; margin:0;}
+
+  /* Speech */
+  .speech-meta{display:flex; gap:14px; align-items:center; margin-bottom:20px; flex-wrap:wrap;}
+  .time-badge{
+    background:var(--ink); color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; padding:6px 12px; border-radius:999px;
+  }
+  .speech-body{font-size:16.5px; line-height:1.75; color:var(--ink-soft);}
+  .speech-body p{margin:0 0 14px;}
+  .yt-link{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:18px; font-weight:600; font-size:14.5px;
+    color:var(--ink); text-decoration:none;
+    border-bottom:1.5px solid var(--dawn); padding-bottom:2px;
+  }
+
+  /* Breathing */
+  .breathe-grid{display:flex; flex-direction:column; align-items:center; gap:26px;}
+  .pattern-select{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  }
+  .pattern-btn{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:999px; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink-soft); cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .pattern-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .breathe-stage{
+    position:relative; width:220px; height:220px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .breathe-ring-static{position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line);}
+  .breathe-circle{
+    width:120px; height:120px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--glow), var(--sage) 90%);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 1s linear;
+    box-shadow:0 0 40px -6px rgba(111,146,130,0.6);
+  }
+  .breathe-phase{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:0.08em;
+  }
+  .breathe-controls{display:flex; gap:12px;}
+  .btn-primary{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 26px; border-radius:999px; border:none;
+    background:var(--ink); color:var(--paper); cursor:pointer;
+    transition:transform 0.15s ease, background 0.2s ease;
+  }
+  .btn-primary:hover{background:var(--sage);}
+  .btn-primary:active{transform:scale(0.97);}
+  .btn-ghost{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 22px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--ink-soft); cursor:pointer;
+  }
+
+  /* Chant */
+  .chant-row{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+  .chant-visual{
+    width:64px; height:64px; border-radius:50%;
+    background:radial-gradient(circle, var(--dawn), var(--ink) 120%);
+    flex-shrink:0;
+  }
+  .chant-visual.playing{animation:pulseChant 2.4s ease-in-out infinite;}
+  @keyframes pulseChant{0%,100%{box-shadow:0 0 0 0 rgba(255,143,94,0.35);} 50%{box-shadow:0 0 0 16px rgba(255,143,94,0);}}
+  .volume-row{display:flex; align-items:center; gap:10px; margin-top:18px;}
+  .volume-row input[type=range]{accent-color: var(--dawn); width:160px;}
+  .volume-row label{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono', monospace;}
+
+  /* Good thing */
+  .good-image-wrap{
+    width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden;
+    margin-bottom:22px; background:linear-gradient(135deg, var(--mist), var(--line));
+  }
+  .good-image-wrap svg{width:100%; height:100%; display:block;}
+  .good-thing-text{font-size:17px; line-height:1.7; color:var(--ink); margin:0;}
+  .good-thing-tag{
+    display:inline-block; margin-top:20px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--sage); background:rgba(111,146,130,0.12);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  footer{
+    text-align:center; padding:70px 24px 60px; color:var(--ink-soft); font-size:13.5px;
+  }
+  footer .fdate{font-family:'IBM Plex Mono', monospace; letter-spacing:0.05em; margin-bottom:6px;}
+  .reload-btn{
+    margin-top:22px;
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    font-family:'Inter', sans-serif; font-size:13px; padding:9px 18px;
+    border-radius:999px; cursor:pointer;
+  }
+
+  @media (max-width:520px){
+    section.card{padding:30px 20px;}
+    .breathe-stage{width:190px; height:190px;}
+    .breathe-circle{width:100px; height:100px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+
+<div class="hero">
+  <div class="eyebrow" id="dateLabel">— loading —</div>
+  <div class="orb-wrap">
+    <div class="orb-ring"></div>
+    <div class="orb-ring r2"></div>
+    <div class="orb"></div>
+  </div>
+  <h1>Today, you get to<br><em>begin again.</em></h1>
+  <p class="sub">One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.</p>
+</div>
+
+<main>
+
+  <section class="card" id="quoteCard">
+    <div class="card-label"><span class="num">01</span> Today's quote</div>
+    <p class="quote-text"><span class="quote-mark">“</span><span id="quoteText"></span><span class="quote-mark">”</span></p>
+    <div class="quote-actions">
+      <button class="btn-ghost" id="quoteShareBtn">Share as image</button>
+    </div>
+  </section>
+  <canvas id="shareCanvas" width="1080" height="1350" style="display:none;"></canvas>
+
+  <section class="card" id="speechCard">
+    <div class="card-label"><span class="num">02</span> Short spark</div>
+    <div class="speech-meta">
+      <h2 class="card-title" id="speechTitle" style="margin:0;"></h2>
+      <span class="time-badge" id="speechTime">short read</span>
+    </div>
+    <div class="speech-body" id="speechBody"></div>
+    <div class="quote-actions">
+      <a class="yt-link" id="speechLink" href="#" target="_blank" rel="noopener">Find a full talk on this theme on YouTube ↗</a>
+    </div>
+    <p class="source-note">One of 24 short reads — reshuffles without repeating for a while.</p>
+  </section>
+
+  <section class="card" id="breatheCard">
+    <div class="card-label"><span class="num">03</span> Breathing exercise</div>
+    <h2 class="card-title">Give your nervous system sixty seconds</h2>
+    <div class="breathe-grid">
+      <div class="pattern-select" id="patternSelect"></div>
+      <div class="breathe-stage">
+        <div class="breathe-ring-static"></div>
+        <div class="breathe-circle" id="breatheCircle">
+          <span class="breathe-phase" id="breathePhase">ready</span>
+        </div>
+      </div>
+      <div class="breathe-controls">
+        <button class="btn-primary" id="breatheStart">Start breathing</button>
+        <button class="btn-ghost" id="breatheStop">Stop</button>
+      </div>
+      <div class="mono" id="cycleCount" style="font-size:12px; color:var(--ink-soft); opacity:0.7;"></div>
+    </div>
+  </section>
+
+  <section class="card" id="chantCard">
+    <div class="card-label"><span class="num">04</span> Chant &amp; calm tone</div>
+    <h2 class="card-title">A steady drone to settle into</h2>
+    <div class="chant-row">
+      <div class="chant-visual" id="chantVisual"></div>
+      <div>
+        <button class="btn-primary" id="chantToggle">Play tone</button>
+        <div class="volume-row">
+          <label for="chantVolume">VOLUME</label>
+          <input type="range" id="chantVolume" min="0" max="100" value="70">
+        </div>
+        <p style="font-size:12px; color:var(--ink-soft); opacity:0.75; margin:10px 0 0;">On iPhone: flip the side mute switch off and turn up media volume — the silent switch blocks web audio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="goodCard">
+    <div class="card-label"><span class="num">05</span> Daily affirmation</div>
+    <div class="good-image-wrap" id="goodImage"></div>
+    <p class="affirmation-text" id="affirmationText"></p>
+    <p class="affirmation-hint">Read it slowly, out loud if you can. Then carry it into your day.</p>
+    <p class="source-note" id="goodImageCredit"></p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fdate mono" id="footerDate"></div>
+  <div>Daily Spark refreshes automatically at midnight — bookmark this page and come back tomorrow.</div>
+  <div style="display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap;">
+    <button class="reload-btn" id="shuffleBtn">Shuffle today's picks</button>
+    <button class="reload-btn" id="shareBtn">Share Daily Spark</button>
+  </div>
+</footer>
+
+<script>
+/* ---------------- CONTENT LIBRARIES ---------------- */
+
+const QUOTES = [
+"Discipline is choosing between what you want now and what you want most.",
+"The days are long, but the compound interest of small effort is enormous.",
+"You don't need more time, you need to decide.",
+"Motivation gets you started. A system keeps you going.",
+"Nobody is coming to save you from the work — and that's the good news.",
+"Small and consistent beats big and occasional, every single time.",
+"Your future is built in the five minutes you almost skipped.",
+"Comfort is a loan against your potential, and it charges interest.",
+"You are one honest decision away from a different year.",
+"Progress hides inside the reps nobody claps for.",
+"The version of you that you're proud of is built one unremarkable Tuesday at a time.",
+"Energy follows attention. Point it somewhere worth building.",
+"You can't think your way into a new life. You act your way into one.",
+"Doubt kills more dreams than failure ever will.",
+"Start before you're ready. Ready is a myth you tell yourself to stay comfortable.",
+"The obstacle you're avoiding is usually the one thing standing between you and growth.",
+"Some days you show up motivated. Most days you just show up. Both count.",
+"Nothing is heavier than a good idea you never acted on.",
+"You are allowed to be a work in progress and still be proud of the work.",
+"The fastest way through fear is directly at it.",
+"Discomfort today is just tuition for the person you're becoming.",
+"Your habits are voting for who you'll be in five years. Vote wisely today.",
+"Stop waiting for certainty. Certainty is for people looking backward.",
+"A goal without a deadline is just a wish wearing a nice outfit.",
+"Consistency is the only kind of talent that never runs out.",
+"You don't rise to the level of your goals, you fall to the level of your systems.",
+"Every master was once a disaster who refused to quit.",
+"The best time to plant the tree was years ago. The second best time is this morning.",
+"Focus is saying no to a hundred good ideas so you can say yes to the right one.",
+"Your body keeps score of every promise you make to yourself. Keep more of them.",
+"Growth is uncomfortable by design — that's how you know it's working.",
+"The finish line moves. Enjoy the mile you're actually running.",
+"Nobody remembers your bad first draft. They remember that you finished.",
+"Confidence isn't the absence of fear, it's just proof you've done hard things before.",
+"You can't pour from an empty routine. Fill it before you empty yourself.",
+"What you tolerate, you train. What you train, you become.",
+"Rest is not the opposite of progress — burnout is.",
+"You are not behind. You are exactly where your effort has placed you, and that can change today.",
+"The plan doesn't need to be perfect. It needs to start.",
+"Big change is just small change, repeated until it isn't small anymore."
+];
+
+const SPEECHES = [
+ {
+  title:"The Five-Minute Rule",
+  time:"3 min read",
+  body:[
+   "There is a version of today where you do the hard thing first. Not because you feel like it, but because feeling like it was never going to arrive on schedule.",
+   "Most people wait for motivation the way they wait for a bus that isn't running today. Meanwhile the work sits there, patient, unbothered by your mood.",
+   "Try this instead: commit to five minutes. Not the whole task, not the whole workout, not the whole difficult conversation. Five minutes, and then you're allowed to stop.",
+   "Here's what actually happens — you rarely stop. The five minutes was never really about five minutes. It was about breaking the seal on starting, because starting is the only part your resistance was ever protecting.",
+   "So today, don't aim for finished. Aim for five minutes of honest effort. Let momentum handle the rest — it's better at this than willpower ever was."
+  ]
+ },
+ {
+  title:"Nobody Is Watching, Do It Anyway",
+  time:"3 min read",
+  body:[
+   "There's a strange kind of freedom in the fact that no one is tracking your effort as closely as you think they are.",
+   "The extra rep, the early wake-up, the page written when you didn't feel clever — nobody applauds those. They happen in private, logged only by you.",
+   "And that's exactly why they matter. Character isn't what you do for an audience. It's what you do when the only witness is the person you're becoming.",
+   "So do the unglamorous thing today. Not for the story you'll tell later, but for the quiet evidence you're building that you are someone who follows through."
+  ]
+ },
+ {
+  title:"Bad Days Still Count",
+  time:"2 min read",
+  body:[
+   "You will have days where the plan falls apart before ten in the morning. The workout gets skipped, the inbox wins, the good intentions dissolve by lunch.",
+   "Here is the part nobody tells you: a bad day inside a long streak is not a failure, it's just weather. It passes through, and tomorrow is still available to you.",
+   "The people who actually change their lives aren't the ones who never have a bad day. They're the ones who don't let one bad day become an identity.",
+   "So if today already went sideways — this is your permission slip. Do one small true thing before it ends, and call it a comeback, not a rescue."
+  ]
+ },
+ {
+  title:"The Compound Effect of Ordinary Days",
+  time:"4 min read",
+  body:[
+   "Nobody falls in love with the process on day one. Day one is awkward and slow and mostly just you figuring out where things are.",
+   "The magic isn't in the individual day — it's in the fact that day forty looks nothing like day one, even though neither felt remarkable while it was happening.",
+   "This is the part that trips people up: they judge the process by how it feels in the moment, instead of by what it's quietly building underneath.",
+   "A single workout doesn't change your body. A single page doesn't finish your book. A single hard conversation doesn't fix the relationship. But the fortieth one might, because it's standing on the shoulders of the first thirty-nine.",
+   "So stop asking whether today felt significant. Ask whether today was honest. Let the calendar handle significance — that's its job, not yours."
+  ]
+ },
+ {
+  title:"Fear Is Just Information",
+  time:"3 min read",
+  body:[
+   "Fear has a terrible reputation, mostly because we've confused it with danger. Most of what makes your palms sweat today isn't actually going to hurt you.",
+   "It's the presentation, the phone call, the decision you've been circling for weeks. None of that is a tiger. It's just uncertainty wearing a scary mask.",
+   "Here's a better way to read fear: it's a rough map of what matters to you. You don't feel nervous about things you don't care about.",
+   "So the next time your stomach tightens before doing the important thing, don't take it as a stop sign. Take it as confirmation you're finally pointed at something that counts."
+  ]
+ },
+ {
+  title:"Choose Your Hard",
+  time:"2 min read",
+  body:[
+   "Discipline is hard. Regret is also hard. Waking up early is hard. Staying stuck is also hard. There is no version of a meaningful life without some kind of hard in it.",
+   "The only real choice you get is which hard you're willing to carry — the temporary hard of doing the difficult thing, or the slow, compounding hard of avoiding it.",
+   "Most regret isn't about the things that went wrong. It's about the things that were never attempted, because the safer hard felt easier in the moment.",
+   "So pick your hard on purpose today. At least that one comes with a future you're proud of."
+  ]
+ },
+ {
+  title:"You Are Allowed to Start Over Today",
+  time:"2 min read",
+  body:[
+   "Somewhere along the way we started believing that consistency means never breaking the chain — that one missed day erases every day before it.",
+   "That's not how it works, and treating it that way is exactly why people quit after a single slip instead of just continuing.",
+   "A missed morning doesn't undo a month of mornings you showed up. It's just one square on a very long calendar.",
+   "So if you fell off — this is not a lecture, it's an invitation. Today counts exactly as much as day one did. Start there."
+  ]
+ },
+ {
+  title:"The Room You're Not In Yet",
+  time:"3 min read",
+  body:[
+   "There is a version of your life a few years out — a room you're not standing in yet, built entirely from decisions you haven't made.",
+   "Every rep, every early alarm, every hard conversation you have this year is a plank in the floor of that room. You won't see it take shape today. You rarely do.",
+   "This is the frustrating and beautiful part of building anything real: the payoff is almost always invisible in the moment it's earned.",
+   "So build the floor anyway. You're not doing today's work for today. You're doing it for the room you haven't walked into yet."
+  ]
+ },
+ {
+  title:"The Locksmith's Advice",
+  time:"3 min read",
+  body:[
+   "There's an old locksmith who says the same thing to every apprentice on their first day: a lock doesn't care how hard you turn the key. It only cares if you found the right one.",
+   "Most people push harder when something isn't working. Louder emails, longer hours, more willpower thrown at the same broken approach.",
+   "The locksmith's apprentices learn to stop and ask a different question instead: is this the wrong key, or the wrong amount of force?",
+   "Today, if something in your life feels like it's grinding against you, try that question before you try harder. Sometimes the fix isn't more effort. It's a different angle entirely."
+  ]
+ },
+ {
+  title:"What the Marathoner Knows",
+  time:"3 min read",
+  body:[
+   "Ask any marathoner about mile eighteen and they'll tell you the same thing: it's not the legs that give out first. It's the story you start telling yourself.",
+   "Somewhere around that point, the mind starts negotiating — maybe walk for a bit, maybe today isn't the day, maybe this was a mistake.",
+   "The ones who finish aren't the ones without that voice. They're the ones who've learned to keep moving while it talks.",
+   "Whatever mile eighteen looks like for you today — the project, the conversation, the hard decision — the voice negotiating with you isn't a signal to stop. It's just what mile eighteen sounds like. Keep moving anyway."
+  ]
+ },
+ {
+  title:"The Gardener Who Waited",
+  time:"2 min read",
+  body:[
+   "A gardener planted a bamboo seed and watered it every day for four years. Nothing happened. No stem, no leaf, nothing visible above the soil.",
+   "In the fifth year, the bamboo grew eighty feet in six weeks.",
+   "It wasn't dormant those four years. It was building a root system wide enough to support what was coming.",
+   "If your effort feels invisible right now, you might not be failing. You might be underground, doing the part of the work nobody gets to see."
+  ]
+ },
+ {
+  title:"Talk Like Someone Believes You",
+  time:"3 min read",
+  body:[
+   "There's a habit worth breaking: narrating your own life like a disappointed narrator. 'Of course this happened.' 'Typical.' 'Here we go again.'",
+   "You wouldn't talk to a friend that way after a setback. You'd remind them of the last five times they figured it out anyway.",
+   "Try being that friend to yourself today, even just once, even if it feels a little silly at first.",
+   "The tone you use with yourself isn't just commentary. It's instruction. Choose one that's actually trying to help you win."
+  ]
+ },
+ {
+  title:"The Understudy's Night",
+  time:"3 min read",
+  body:[
+   "An understudy waits backstage for years, knowing every line, every mark, every cue, for a role she may never actually play.",
+   "One night, the lead is sick. She goes on with four hours' notice and no rehearsal under the real lights.",
+   "Nobody in the audience knows the difference. She'd already done the work. The stage just finally matched it.",
+   "You might be preparing for something with no stage in sight yet. Keep learning the lines anyway. You don't get to choose when the call comes, only whether you're ready when it does."
+  ]
+ },
+ {
+  title:"The Weight You're Not Actually Carrying",
+  time:"2 min read",
+  body:[
+   "Most of what exhausts people isn't today's task. It's tomorrow's task, and next week's, and the one after that, all being carried at once, right now, for no reason.",
+   "Today only actually requires today. The rest is a preview you didn't need to buy a ticket for.",
+   "Put the rest down. You can pick each one up on its actual day, when it's actually due, with actual information about how to handle it.",
+   "One day, held properly, weighs a lot less than a month held all at once."
+  ]
+ },
+ {
+  title:"What the Cartographer Left Blank",
+  time:"3 min read",
+  body:[
+   "Old maps used to mark unexplored regions with a single honest phrase: here be dragons. Not because dragons were confirmed. Because nobody had checked yet.",
+   "Most fear works the same way — it's not a report from the territory, it's just an old warning about ground nobody in your life has actually walked.",
+   "The people who ended up charting those regions weren't fearless. They just treated the blank space as unknown, not as guaranteed danger.",
+   "Whatever blank space you're avoiding today, it's probably not full of dragons. It's just unmapped. Someone has to go first, and there's no rule saying it can't be you."
+  ]
+ },
+ {
+  title:"Sharpening the Axe",
+  time:"2 min read",
+  body:[
+   "A woodcutter given eight hours to fell a tree said he'd spend six of them sharpening the axe.",
+   "It sounds like it wastes time. It's actually the only version of the plan that isn't wasting time.",
+   "Most people skip the sharpening because swinging feels more like progress. It rarely is.",
+   "Before you swing at today's hardest task, ask if there's ten minutes of sharpening you're skipping — a plan, a clearer goal, a better tool. It's not a delay. It's usually the fastest way through."
+  ]
+ },
+ {
+  title:"The Lighthouse Doesn't Chase Ships",
+  time:"2 min read",
+  body:[
+   "A lighthouse never leaves its rock to go find the ships that need it. It just stays lit, exactly where it said it would be, and lets the ships come to it.",
+   "You don't have to chase every opportunity, every person, every version of approval that might be out there tonight.",
+   "Sometimes the strongest thing you can do is stay exactly where you are, doing the work honestly, and let the right things find their way to that light.",
+   "Be the lighthouse today. Not the ship."
+  ]
+ },
+ {
+  title:"The Apprentice Blacksmith",
+  time:"3 min read",
+  body:[
+   "An apprentice blacksmith ruined his first forty blades. His master never once told him to stop.",
+   "On the forty-first, something in his hands finally understood what his eyes had been watching for months. The blade held.",
+   "Nobody remembers the forty ruined ones. They only ever see the one that worked, and assume it was the first try.",
+   "Whatever you're bad at right now might just be blade thirty-one, not a sign to quit. Keep hitting the metal."
+  ]
+ },
+ {
+  title:"You Don't Owe an Explanation for Resting",
+  time:"2 min read",
+  body:[
+   "Somewhere along the way, rest started requiring a justification — you had to have earned it, deserved it, worked hard enough first.",
+   "Machines get maintenance without proving they've suffered enough to deserve it. You're allowed the same basic logic.",
+   "Resting isn't the opposite of ambition. It's usually the thing that makes tomorrow's ambition possible at all.",
+   "Rest today if you need it. You don't need a permission slip, and you definitely don't need a receipt."
+  ]
+ },
+ {
+  title:"The Two Wolves",
+  time:"2 min read",
+  body:[
+   "There's an old story about a grandfather telling his grandson that two wolves live inside every person — one fear, one courage — constantly fighting.",
+   "The grandson asks which one wins. The grandfather says: whichever one you feed.",
+   "It's a simple idea, but it holds up under pressure: your attention is food. Whatever thought you keep returning to today gets stronger by tonight.",
+   "Feed the wolf you actually want to win. It's listening to what you're choosing right now."
+  ]
+ },
+ {
+  title:"The Second Coat of Paint",
+  time:"2 min read",
+  body:[
+   "Anyone who's painted a wall knows the first coat always looks like a mistake — patchy, uneven, wrong colors bleeding through.",
+   "It's not a mistake. It's just the first coat. It was never supposed to be the finished wall.",
+   "A lot of first attempts get abandoned because they're judged like they were meant to be the last one.",
+   "Whatever you started today that looks patchy and uneven, it might just need its second coat, not a full repaint."
+  ]
+ },
+ {
+  title:"What the Night Shift Nurse Said",
+  time:"3 min read",
+  body:[
+   "A nurse who's worked night shifts for twenty years once said the hardest hour isn't midnight. It's four in the morning, when the body is most convinced the day will never come.",
+   "Her trick isn't motivation. It's arithmetic — she just counts down the hours she has left, one at a time, instead of measuring the whole shift at once.",
+   "Four hours feels impossible. Forty minutes feels doable. She's just doing forty minutes, eight times.",
+   "Whatever your four-in-the-morning is today, you don't have to survive the whole thing at once. Just the next forty minutes. Then the next."
+  ]
+ },
+ {
+  title:"The Cracked Pot",
+  time:"2 min read",
+  body:[
+   "A water carrier used two pots on a pole across her shoulders. One was perfect. The other had a crack and leaked half its water on every walk home.",
+   "The cracked pot apologized for years, ashamed of only ever delivering half a load.",
+   "One day the carrier showed it the path behind them — flowers, only on the cracked pot's side, watered the whole way without anyone trying.",
+   "Your cracks might be leaking exactly what someone else needed, without you ever noticing you were doing it."
+  ]
+ },
+ {
+  title:"The Only Deadline That's Real",
+  time:"2 min read",
+  body:[
+   "Most deadlines are borrowed anxiety — someone else's estimate of when something should be done, treated like a law of physics.",
+   "There's really only one deadline that's unmovable: today ends at midnight, whether or not you used it well.",
+   "That's not pressure. It's clarity. You don't have to solve the whole month by tonight. You just have to spend today honestly.",
+   "Let the bigger deadlines wait their turn. Today just needs today."
+  ]
+ }
+];
+
+const AFFIRMATIONS = [
+"I am enough.",
+"I am worthy of love and respect.",
+"I choose peace over worry today.",
+"I am capable of handling whatever comes my way.",
+"I trust myself to make good decisions.",
+"Every day I grow stronger and wiser.",
+"I deserve good things.",
+"I choose happiness today.",
+"I release what I cannot control.",
+"I am grateful for everything I have.",
+"My potential is limitless.",
+"I am doing my best, and that is enough.",
+"I attract positive people and good energy.",
+"I am becoming the best version of myself.",
+"I forgive myself and let go of the past.",
+"I am calm, centered, and focused.",
+"I believe in my ability to succeed.",
+"I welcome change and new opportunities.",
+"I am resilient. Challenges make me stronger.",
+"My mistakes do not define me.",
+"I speak to myself with kindness.",
+"I have the courage to start.",
+"I am proud of how far I have come.",
+"Today I choose progress over perfection.",
+"I am surrounded by love and support.",
+"I let go of fear and embrace confidence.",
+"I am healthy, strong, and full of energy.",
+"I make a positive difference in the world.",
+"I am open to receiving abundance.",
+"I breathe in calm and breathe out tension.",
+"I am exactly where I need to be.",
+"I have everything I need within me.",
+"I focus on what I can control.",
+"I deserve rest without guilt.",
+"I am allowed to take up space.",
+"I trust the timing of my life.",
+"Small steps still move me forward.",
+"I am worthy of success and happiness.",
+"I radiate confidence and positivity.",
+"I let my actions reflect my values.",
+"I am patient with myself.",
+"Good things are coming my way.",
+"I am open to new opportunities.",
+"I choose thoughts that uplift me.",
+"I am proud of my effort, not just my results.",
+"I am free to set boundaries.",
+"I am growing through what I go through.",
+"My voice matters.",
+"I bring something unique to the world.",
+"I am at peace with who I am becoming.",
+"I act with courage even when I feel unsure.",
+"I celebrate my small wins.",
+"I am safe, and I am steady.",
+"Today is full of possibility.",
+"I choose to see the good in this day.",
+"I give myself permission to rest and recharge.",
+"I am disciplined, focused, and consistent.",
+"I am deserving of my dreams.",
+"I let go of comparison and run my own race.",
+"I am thankful for this moment.",
+"I am whole, just as I am."
+];
+
+// Picks a random entry while avoiding whatever was shown in the last few visits,
+// so nothing repeats noticeably even without any external content source.
+function pickFresh(arr, storageKey, historySize){
+  let history = [];
+  try{ history = JSON.parse(localStorage.getItem(storageKey) || '[]'); }catch(e){ history = []; }
+  let available = arr.map((_, i) => i).filter(i => !history.includes(i));
+  if(!available.length){ available = arr.map((_, i) => i); history = []; }
+  const chosen = available[Math.floor(Math.random() * available.length)];
+  history.push(chosen);
+  if(history.length > historySize) history.shift();
+  try{ localStorage.setItem(storageKey, JSON.stringify(history)); }catch(e){ /* storage unavailable — fine, just less variety tracking */ }
+  return arr[chosen];
+}
+
+const BREATH_PATTERNS = {
+  box:    {label:"Box breathing", phases:[["Inhale",4],["Hold",4],["Exhale",4],["Hold",4]]},
+  calm478:{label:"4-7-8 calm", phases:[["Inhale",4],["Hold",7],["Exhale",8]]},
+  reset:  {label:"Quick reset", phases:[["Inhale",4],["Exhale",6]]}
+};
+
+/* ---------------- DATE-BASED ROTATION ---------------- */
+const dayIndex = Math.floor(Date.now() / 86400000);
+function pick(arr, seedOffset){ return arr[(dayIndex + seedOffset) % arr.length]; }
+
+const today = new Date();
+const dateStr = today.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+document.getElementById('dateLabel').textContent = dateStr.toUpperCase();
+document.getElementById('footerDate').textContent = dateStr;
+
+let quoteSeed = 0;
+
+function renderQuote(){
+  document.getElementById('quoteText').textContent = pick(QUOTES, quoteSeed);
+}
+
+function renderSpeech(){
+  const s = pickFresh(SPEECHES, 'ds_speech_history', 6);
+  document.getElementById('speechTitle').textContent = s.title;
+  document.getElementById('speechTime').textContent = s.time;
+  document.getElementById('speechBody').innerHTML = s.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('speechLink').href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(s.title + " inspirational talk");
+}
+
+function renderGood(random){
+  // Same affirmation all day, a new one at local midnight.
+  const localDayNumber = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+  document.getElementById('affirmationText').textContent = AFFIRMATIONS[localDayNumber % AFFIRMATIONS.length];
+  loadGoodImage(!!random);
+}
+
+// Today's picture is drawn right here in the page (no image download, no
+// third-party service), so it can never fail to load. Six scenes rotate by
+// day, and each day also shifts details like the sun, moon and stars.
+function localDayNum(){
+  return Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+}
+function makeRng(seed){
+  let a = Math.floor(seed) >>> 0;
+  return function(){
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function starsSvg(r, n, maxY){
+  let out = '';
+  for(let i = 0; i < n; i++){
+    out += `<circle cx="${(r() * 1080).toFixed(0)}" cy="${(r() * maxY).toFixed(0)}" r="${(0.8 + r() * 1.8).toFixed(1)}" fill="#FCFBF8" opacity="${(0.4 + r() * 0.6).toFixed(2)}"/>`;
+  }
+  return out;
+}
+const SVG_OPEN = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 608" preserveAspectRatio="xMidYMid slice" role="img" aria-label="';
+
+const SCENES = [
+  { name: "Sunrise over the mountains", draw: (r) => {
+    const sx = Math.round(380 + r() * 320);
+    return SVG_OPEN + `Sunrise over the mountains"><defs>
+<linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="0.5" stop-color="#4A4A8C"/><stop offset="0.8" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<radialGradient id="s1"><stop offset="0" stop-color="#FFD59E" stop-opacity="0.9"/><stop offset="1" stop-color="#FFD59E" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g1)"/>${starsSvg(r, 40, 220)}
+<circle cx="${sx}" cy="400" r="190" fill="url(#s1)"/><circle cx="${sx}" cy="400" r="64" fill="#FFE7BF"/>
+<path d="M0 440 L130 340 L250 410 L400 300 L560 420 L700 330 L850 430 L980 350 L1080 410 V608 H0Z" fill="#3A3F7A" opacity="0.85"/>
+<path d="M0 500 L170 400 L320 480 L480 380 L640 490 L800 400 L960 480 L1080 430 V608 H0Z" fill="#232A5C"/>
+<path d="M0 560 L200 480 L380 550 L560 470 L760 550 L940 490 L1080 540 V608 H0Z" fill="#141A31"/></svg>`;
+  }},
+  { name: "Moonlight on still water", draw: (r) => {
+    const mx = Math.round(600 + r() * 280);
+    let refl = '';
+    for(let i = 0; i < 6; i++){
+      refl += `<rect x="${mx - 50 + i * 6}" y="${402 + i * 26}" width="${100 - i * 12}" height="4" rx="2" fill="#FCFBF8" opacity="${(0.5 - i * 0.07).toFixed(2)}"/>`;
+    }
+    return SVG_OPEN + `Moonlight on still water"><defs>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1330"/><stop offset="1" stop-color="#2A3364"/></linearGradient>
+<linearGradient id="w2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="1" stop-color="#0B0E24"/></linearGradient>
+<radialGradient id="m2"><stop offset="0" stop-color="#FCFBF8" stop-opacity="0.5"/><stop offset="1" stop-color="#FCFBF8" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g2)"/>${starsSvg(r, 90, 340)}
+<circle cx="${mx}" cy="170" r="130" fill="url(#m2)"/><circle cx="${mx}" cy="170" r="58" fill="#FCFBF8"/>
+<rect y="380" width="1080" height="228" fill="url(#w2)"/>${refl}
+<path d="M0 380 L0 345 Q150 305 300 345 T620 340 T1080 335 V380Z" fill="#0B0E24"/></svg>`;
+  }},
+  { name: "Golden hour at sea", draw: (r) => {
+    const sx = Math.round(400 + r() * 280);
+    let waves = '', glints = '';
+    for(let i = 0; i < 9; i++){
+      waves += `<path d="M0 ${365 + i * 24} q135 -8 270 0 t270 0 t270 0 t270 0" stroke="#FFE7BF" stroke-opacity="${(0.28 - i * 0.025).toFixed(2)}" stroke-width="2" fill="none"/>`;
+    }
+    for(let i = 0; i < 6; i++){
+      glints += `<rect x="${sx - 70 + i * 8}" y="${352 + i * 28}" width="${140 - i * 16}" height="5" rx="2.5" fill="#FFE7BF" opacity="${(0.7 - i * 0.1).toFixed(2)}"/>`;
+    }
+    return SVG_OPEN + `Golden hour at sea"><defs>
+<linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3364"/><stop offset="0.6" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<linearGradient id="w3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB27A"/><stop offset="0.35" stop-color="#3A3F7A"/><stop offset="1" stop-color="#141A31"/></linearGradient>
+<clipPath id="c3"><rect width="1080" height="340"/></clipPath></defs>
+<rect width="1080" height="340" fill="url(#g3)"/><circle cx="${sx}" cy="340" r="86" fill="#FFE7BF" clip-path="url(#c3)"/>
+<rect y="340" width="1080" height="268" fill="url(#w3)"/>${waves}${glints}</svg>`;
+  }},
+  { name: "A lone tree at dawn", draw: (r) => {
+    const tx = Math.round(640 + r() * 200);
+    const sx = Math.round(230 + r() * 260);
+    return SVG_OPEN + `A lone tree at dawn"><defs>
+<linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3364"/><stop offset="0.55" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<radialGradient id="s4"><stop offset="0" stop-color="#FFE7BF" stop-opacity="0.85"/><stop offset="1" stop-color="#FFE7BF" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g4)"/>
+<circle cx="${sx}" cy="340" r="200" fill="url(#s4)"/><circle cx="${sx}" cy="340" r="80" fill="#FFE7BF"/>
+<path d="M0 480 Q300 420 640 465 T1080 450 V608 H0Z" fill="#3A3F7A" opacity="0.8"/>
+<rect x="${tx - 6}" y="385" width="12" height="90" fill="#141A31"/>
+<circle cx="${tx}" cy="350" r="50" fill="#141A31"/><circle cx="${tx - 36}" cy="376" r="35" fill="#141A31"/><circle cx="${tx + 36}" cy="376" r="35" fill="#141A31"/>
+<path d="M0 500 Q300 440 640 485 T1080 470 V608 H0Z" fill="#141A31"/>
+<path d="M200 150 q10 -10 20 0 q10 -10 20 0 M260 185 q8 -8 16 0 q8 -8 16 0 M330 140 q7 -7 14 0 q7 -7 14 0" stroke="#141A31" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+  }},
+  { name: "Pines in the evening mist", draw: (r) => {
+    const colors = ['#4A5C80', '#2C3C63', '#141A31'];
+    let forest = '';
+    for(let row = 0; row < 3; row++){
+      const base = 420 + row * 62;
+      for(let i = 0; i < 16; i++){
+        const x = (i + 0.2 + r() * 0.6) * (1080 / 15) - 20;
+        const h = 90 + row * 28 + r() * 40;
+        const w = h * 0.32;
+        forest += `<path d="M${x.toFixed(0)} ${(base - h).toFixed(0)} L${(x - w).toFixed(0)} ${base} L${(x + w).toFixed(0)} ${base}Z" fill="${colors[row]}"/>`;
+      }
+      forest += `<rect y="${base - 2}" width="1080" height="${608 - base + 2}" fill="${colors[row]}"/>`;
+      if(row < 2) forest += `<rect y="${base - 70}" width="1080" height="110" fill="url(#mist5)"/>`;
+    }
+    return SVG_OPEN + `Pines in the evening mist"><defs>
+<linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="0.6" stop-color="#6A4F86"/><stop offset="1" stop-color="#FFB27A"/></linearGradient>
+<linearGradient id="mist5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCFBF8" stop-opacity="0"/><stop offset="1" stop-color="#FCFBF8" stop-opacity="0.16"/></linearGradient></defs>
+<rect width="1080" height="608" fill="url(#g5)"/>${starsSvg(r, 30, 200)}
+<circle cx="${Math.round(300 + r() * 480)}" cy="170" r="36" fill="#FFE7BF" opacity="0.92"/>${forest}</svg>`;
+  }},
+  { name: "The lighthouse at twilight", draw: (r) => {
+    return SVG_OPEN + `The lighthouse at twilight"><defs>
+<linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1330"/><stop offset="0.6" stop-color="#2A3364"/><stop offset="1" stop-color="#FF8F5E"/></linearGradient>
+<linearGradient id="w6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="1" stop-color="#0B0E24"/></linearGradient>
+<linearGradient id="b6" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#FFD59E" stop-opacity="0.6"/><stop offset="1" stop-color="#FFD59E" stop-opacity="0"/></linearGradient>
+<radialGradient id="l6"><stop offset="0" stop-color="#FFE7BF" stop-opacity="0.9"/><stop offset="1" stop-color="#FFE7BF" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g6)"/>${starsSvg(r, 70, 300)}
+<rect y="430" width="1080" height="178" fill="url(#w6)"/>
+<path d="M860 242 L0 ${150 + Math.round(r() * 40)} L0 ${300 + Math.round(r() * 40)}Z" fill="url(#b6)"/>
+<circle cx="860" cy="242" r="60" fill="url(#l6)"/>
+<path d="M700 608 L760 470 L860 430 L960 470 L1010 608Z" fill="#141A31"/>
+<path d="M833 430 L852 250 L868 250 L887 430Z" fill="#FCFBF8"/>
+<path d="M843.6 330 L876.4 330 L880.7 370 L839.3 370Z" fill="#FF8F5E"/>
+<rect x="848" y="232" width="24" height="20" fill="#FFD59E"/><path d="M844 232 L860 214 L876 232Z" fill="#141A31"/></svg>`;
+  }}
+];
+
+function loadGoodImage(random){
+  const idx = random ? Math.floor(Math.random() * SCENES.length) : localDayNum() % SCENES.length;
+  const seed = random ? Math.random() * 1e9 : localDayNum() * 9973 + 7;
+  const scene = SCENES[idx];
+  document.getElementById('goodImage').innerHTML = scene.draw(makeRng(seed));
+  document.getElementById('goodImageCredit').textContent = scene.name;
+}
+
+renderQuote(); renderSpeech(); renderGood();
+
+/* ---------------- THEME TOGGLE ---------------- */
+(function themeInit(){
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  const saved = localStorage.getItem('ds_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('ds_theme', next);
+    applyTheme(next);
+  });
+})();
+
+/* ---------------- SHAREABLE QUOTE IMAGE ---------------- */
+(function shareImageInit(){
+  const btn = document.getElementById('quoteShareBtn');
+  if(!btn) return;
+
+  function wrapText(ctx, text, maxWidth){
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    words.forEach(w => {
+      const test = line ? line + ' ' + w : w;
+      if(ctx.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = w;
+      } else {
+        line = test;
+      }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  async function generateImage(){
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    await document.fonts.ready;
+
+    const bg = ctx.createRadialGradient(W/2, 0, W*0.1, W/2, H*0.55, H*0.95);
+    bg.addColorStop(0, '#2A3364');
+    bg.addColorStop(0.45, '#1B2340');
+    bg.addColorStop(1, '#12142A');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const glow = ctx.createLinearGradient(0, H*0.62, 0, H);
+    glow.addColorStop(0, 'rgba(255,143,94,0)');
+    glow.addColorStop(1, 'rgba(255,213,158,0.22)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, H*0.62, W, H*0.38);
+
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = '#FFD59E';
+    ctx.font = "600 26px 'IBM Plex Mono', monospace";
+    ctx.fillText('✨  D A I L Y   S P A R K', W/2, 130);
+
+    const englishText = '“' + document.getElementById('quoteText').textContent + '”';
+    const maxWidth = W - 170;
+
+    ctx.fillStyle = '#FCFBF8';
+    ctx.font = "italic 500 54px 'Fraunces', serif";
+    const enLines = wrapText(ctx, englishText, maxWidth);
+
+    const enLineHeight = 70;
+    const footerGap = 60;
+    const totalHeight = (enLines.length * enLineHeight) + footerGap;
+    let cursorY = (H/2) - (totalHeight/2);
+
+    enLines.forEach(line => { cursorY += enLineHeight; ctx.fillText(line, W/2, cursorY); });
+
+    ctx.fillStyle = 'rgba(252,251,248,0.5)';
+    ctx.font = "500 20px 'IBM Plex Mono', monospace";
+    ctx.fillText('a five-minute daily reset', W/2, H - 64);
+
+    return canvas;
+  }
+
+  btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    btn.textContent = "Generating…";
+    btn.disabled = true;
+    try{
+      const canvas = await generateImage();
+      canvas.toBlob(async (blob) => {
+        if(!blob){ btn.textContent = original; btn.disabled = false; return; }
+        const file = new File([blob], 'daily-spark-quote.png', { type: 'image/png' });
+        let shared = false;
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          try{
+            await navigator.share({ files:[file], title:'Daily Spark', text: document.getElementById('quoteText').textContent });
+            shared = true;
+          }catch(e){ /* user cancelled the share sheet */ }
+        }
+        if(!shared){
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'daily-spark-quote.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+        btn.textContent = original;
+        btn.disabled = false;
+      }, 'image/png');
+    }catch(e){
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+})();
+
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  quoteSeed = Math.floor(Math.random()*1000);
+  renderQuote(); renderSpeech(); renderGood(true);
+});
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareData = {
+    title: "Daily Spark",
+    text: "A quiet five-minute reset — quote, breathing, and a good thing happening today.",
+    url: window.location.href
+  };
+  const btn = document.getElementById('shareBtn');
+  try{
+    if(navigator.share){
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      const original = btn.textContent;
+      btn.textContent = "Link copied!";
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+  } catch(e){ /* user cancelled share sheet — no action needed */ }
+});
+
+/* ---------------- BREATHING EXERCISE ---------------- */
+const patternSelect = document.getElementById('patternSelect');
+let currentPattern = 'box';
+Object.keys(BREATH_PATTERNS).forEach(key => {
+  const btn = document.createElement('button');
+  btn.className = 'pattern-btn' + (key === currentPattern ? ' active' : '');
+  btn.textContent = BREATH_PATTERNS[key].label;
+  btn.dataset.key = key;
+  btn.addEventListener('click', () => {
+    currentPattern = key;
+    [...patternSelect.children].forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    stopBreathing();
+  });
+  patternSelect.appendChild(btn);
+});
+
+const circle = document.getElementById('breatheCircle');
+const phaseLabel = document.getElementById('breathePhase');
+const cycleCountLabel = document.getElementById('cycleCount');
+let breatheTimer = null;
+let breathePhaseIdx = 0;
+let cycleCount = 0;
+
+function runBreathPhase(){
+  const pattern = BREATH_PATTERNS[currentPattern];
+  const [name, duration] = pattern.phases[breathePhaseIdx];
+  phaseLabel.textContent = name;
+  circle.style.transition = `transform ${duration}s ease-in-out`;
+  if(name === "Inhale") circle.style.transform = "scale(1.55)";
+  else if(name === "Exhale") circle.style.transform = "scale(0.7)";
+  breatheTimer = setTimeout(() => {
+    breathePhaseIdx = breathePhaseIdx + 1;
+    if(breathePhaseIdx >= pattern.phases.length){
+      breathePhaseIdx = 0;
+      cycleCount++;
+      cycleCountLabel.textContent = cycleCount === 1 ? "1 cycle complete" : `${cycleCount} cycles complete`;
+    }
+    runBreathPhase();
+  }, duration * 1000);
+}
+function startBreathing(){
+  stopBreathing();
+  breathePhaseIdx = 0;
+  cycleCount = 0;
+  cycleCountLabel.textContent = "";
+  runBreathPhase();
+}
+function stopBreathing(){
+  clearTimeout(breatheTimer);
+  circle.style.transition = "transform 0.6s ease";
+  circle.style.transform = "scale(1)";
+  phaseLabel.textContent = "ready";
+}
+document.getElementById('breatheStart').addEventListener('click', startBreathing);
+document.getElementById('breatheStop').addEventListener('click', stopBreathing);
+
+/* ---------------- CHANT / CALM TONE (Web Audio, generated) ---------------- */
+let audioCtx = null;
+let chantNodes = [];
+let chantPlaying = false;
+const chantBtn = document.getElementById('chantToggle');
+const chantVisual = document.getElementById('chantVisual');
+const volumeSlider = document.getElementById('chantVolume');
+
+function targetGain(){
+  return (volumeSlider.value / 100) * 0.5;
+}
+function startChant(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  // iOS/Safari suspends new audio contexts until explicitly resumed inside a user gesture.
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+
+  const masterGain = audioCtx.createGain();
+  const now = audioCtx.currentTime;
+  masterGain.gain.setValueAtTime(0, now);
+  masterGain.gain.linearRampToValueAtTime(targetGain(), now + 1.2); // fade in, avoids clicks
+  masterGain.connect(audioCtx.destination);
+
+  const freqs = [136.1, 204.15, 272.2]; // Om-style fundamental + harmonics
+  chantNodes = freqs.map((f, i) => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    const gain = audioCtx.createGain();
+    gain.gain.value = i === 0 ? 1 : 0.35;
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    return osc;
+  });
+  chantNodes.masterGain = masterGain;
+  chantPlaying = true;
+  chantBtn.textContent = "Stop tone";
+  chantVisual.classList.add('playing');
+}
+function stopChant(){
+  if(chantNodes.masterGain && audioCtx){
+    const now = audioCtx.currentTime;
+    const g = chantNodes.masterGain.gain;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(0, now + 0.4); // fade out, avoids clicks
+  }
+  const nodesToStop = chantNodes;
+  setTimeout(() => { nodesToStop.forEach(n => { try{ n.stop(); }catch(e){} }); }, 450);
+  chantNodes = [];
+  chantPlaying = false;
+  chantBtn.textContent = "Play tone";
+  chantVisual.classList.remove('playing');
+}
+chantBtn.addEventListener('click', () => { chantPlaying ? stopChant() : startChant(); });
+volumeSlider.addEventListener('input', () => {
+  if(chantNodes.masterGain && audioCtx) chantNodes.masterGain.gain.setTargetAtTime(targetGain(), audioCtx.currentTime, 0.05);
+});
+</script>
+</body>
+</html>
