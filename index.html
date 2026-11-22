@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Spark — your daily motivation</title>
+<meta name="theme-color" content="#1B2340">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Spark">
+<meta name="description" content="One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2340;
+    --ink-soft:#4A5578;
+    --dawn:#FF8F5E;
+    --glow:#FFD59E;
+    --mist:#F3F1FA;
+    --sage:#6F9282;
+    --paper:#FCFBF8;
+    --line: rgba(27,35,64,0.10);
+    --shadow: 0 20px 50px -25px rgba(27,35,64,0.35);
+    --radius: 22px;
+  }
+  :root[data-theme="dark"]{
+    --ink:#F2F0FA;
+    --ink-soft:#B7BBD9;
+    --mist:#1B1D2C;
+    --paper:#111220;
+    --line: rgba(255,255,255,0.10);
+    --shadow: 0 20px 50px -25px rgba(0,0,0,0.7);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+  .display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+
+  .theme-toggle{
+    position:fixed; top:18px; right:18px; z-index:50;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(20,22,40,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.20);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:18px; line-height:1;
+    transition:background 0.2s ease, transform 0.15s ease;
+  }
+  .theme-toggle:hover{background:rgba(20,22,40,0.78);}
+  .theme-toggle:active{transform:scale(0.94);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:64px 24px 48px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #2A3364 0%, #1B2340 42%, #141A31 100%);
+    color:#FCFBF8;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:38%;
+    background:linear-gradient(180deg, rgba(255,143,94,0) 0%, rgba(255,143,94,0.14) 55%, rgba(255,213,158,0.30) 100%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--glow);
+    margin-bottom:22px;
+    opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    font-weight:500;
+    line-height:1.04;
+    margin:0 0 16px;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--glow);
+  }
+  .hero p.sub{
+    font-size:17px;
+    color:rgba(252,251,248,0.72);
+    max-width:38ch;
+    margin:0 0 40px;
+    line-height:1.5;
+  }
+
+  /* breathing orb — signature element */
+  .orb-wrap{
+    position:relative;
+    width:150px; height:150px;
+    margin-bottom:44px;
+  }
+  .orb-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1px solid rgba(255,213,158,0.28);
+  }
+  .orb-ring.r2{inset:-22px; border-color:rgba(255,213,158,0.14);}
+  .orb{
+    position:absolute; inset:22px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFD59E 0%, #FF8F5E 55%, #E36B3F 100%);
+    box-shadow:0 0 60px 6px rgba(255,143,94,0.45);
+    animation:heroBreathe 6.5s ease-in-out infinite;
+  }
+  @keyframes heroBreathe{
+    0%,100%{transform:scale(0.86);}
+    50%{transform:scale(1.05);}
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color:rgba(252,251,248,0.5);
+    font-family:'IBM Plex Mono', monospace;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue::after{
+    content:"";
+    width:1px; height:26px;
+    background:linear-gradient(180deg, rgba(252,251,248,0.6), transparent);
+    animation:cueMove 2s ease-in-out infinite;
+  }
+  @keyframes cueMove{0%,100%{opacity:0.3;} 50%{opacity:1;}}
+
+  /* ---------- LAYOUT ---------- */
+  main{max-width:760px; margin:0 auto; padding:0 24px;}
+  section.card{
+    background:var(--mist);
+    border-radius:var(--radius);
+    padding:40px clamp(24px,5vw,56px);
+    margin-top:28px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--dawn);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .card-label .num{color:var(--ink-soft); opacity:0.5;}
+  h2.card-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.5rem, 3vw, 2rem);
+    margin:0 0 18px;
+    line-height:1.2;
+  }
+
+  /* Quote */
+  .quote-text{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.4rem, 3.4vw, 2rem);
+    line-height:1.42;
+    color:var(--ink);
+    margin:0 0 14px;
+  }
+  .quote-mark{color:var(--dawn); font-style:normal;}
+  .quote-actions{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .source-note{font-size:12px; color:var(--ink-soft); opacity:0.7; margin:12px 0 0;}
+  .affirmation-text{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(1.6rem, 4.2vw, 2.4rem); line-height:1.3;
+    color:var(--ink); margin:0 0 14px; text-align:center;
+  }
+  .affirmation-hint{font-size:14px; color:var(--ink-soft); text-align:center; margin:0;}
+
+  /* Speech */
+  .speech-meta{display:flex; gap:14px; align-items:center; margin-bottom:20px; flex-wrap:wrap;}
+  .time-badge{
+    background:var(--ink); color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; padding:6px 12px; border-radius:999px;
+  }
+  .speech-body{font-size:16.5px; line-height:1.75; color:var(--ink-soft);}
+  .speech-body p{margin:0 0 14px;}
+  .speech-source{font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.03em; color:var(--sage); margin:0 0 18px;}
+  .try-box{background:var(--paper); border:1px solid var(--line); border-left:3px solid var(--dawn); border-radius:12px; padding:14px 16px; margin-top:20px;}
+  .try-label{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--dawn); margin-bottom:6px;}
+  .try-box p{margin:0; font-size:15.5px; line-height:1.6; color:var(--ink);}
+  .yt-link{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top:18px; font-weight:600; font-size:14.5px;
+    color:var(--ink); text-decoration:none;
+    border-bottom:1.5px solid var(--dawn); padding-bottom:2px;
+  }
+
+  /* Breathing */
+  .breathe-grid{display:flex; flex-direction:column; align-items:center; gap:26px;}
+  .pattern-select{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+  }
+  .pattern-btn{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:999px; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink-soft); cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .pattern-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .breathe-stage{
+    position:relative; width:220px; height:220px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .breathe-ring-static{position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line);}
+  .breathe-circle{
+    width:120px; height:120px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--glow), var(--sage) 90%);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 1s linear;
+    box-shadow:0 0 40px -6px rgba(111,146,130,0.6);
+  }
+  .breathe-phase{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    font-size:13px; font-weight:500; text-transform:uppercase; letter-spacing:0.08em;
+  }
+  .breathe-controls{display:flex; gap:12px;}
+  .btn-primary{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 26px; border-radius:999px; border:none;
+    background:var(--ink); color:var(--paper); cursor:pointer;
+    transition:transform 0.15s ease, background 0.2s ease;
+  }
+  .btn-primary:hover{background:var(--sage);}
+  .btn-primary:active{transform:scale(0.97);}
+  .btn-ghost{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 22px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--ink-soft); cursor:pointer;
+  }
+
+  /* Chant */
+  .chant-row{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+  .chant-visual{
+    width:64px; height:64px; border-radius:50%;
+    background:radial-gradient(circle, var(--dawn), var(--ink) 120%);
+    flex-shrink:0;
+  }
+  .chant-visual.playing{animation:pulseChant 2.4s ease-in-out infinite;}
+  @keyframes pulseChant{0%,100%{box-shadow:0 0 0 0 rgba(255,143,94,0.35);} 50%{box-shadow:0 0 0 16px rgba(255,143,94,0);}}
+  .volume-row{display:flex; align-items:center; gap:10px; margin-top:18px;}
+  .volume-row input[type=range]{accent-color: var(--dawn); width:160px;}
+  .volume-row label{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono', monospace;}
+
+  /* Good thing */
+  .good-image-wrap{
+    width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden;
+    margin-bottom:22px; background:linear-gradient(135deg, var(--mist), var(--line));
+  }
+  .good-image-wrap svg{width:100%; height:100%; display:block;}
+  .good-thing-text{font-size:17px; line-height:1.7; color:var(--ink); margin:0;}
+  .good-thing-tag{
+    display:inline-block; margin-top:20px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--sage); background:rgba(111,146,130,0.12);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  footer{
+    text-align:center; padding:70px 24px 60px; color:var(--ink-soft); font-size:13.5px;
+  }
+  footer .fdate{font-family:'IBM Plex Mono', monospace; letter-spacing:0.05em; margin-bottom:6px;}
+  .reload-btn{
+    margin-top:22px;
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    font-family:'Inter', sans-serif; font-size:13px; padding:9px 18px;
+    border-radius:999px; cursor:pointer;
+  }
+
+  @media (max-width:520px){
+    section.card{padding:30px 20px;}
+    .breathe-stage{width:190px; height:190px;}
+    .breathe-circle{width:100px; height:100px;}
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+
+<div class="hero">
+  <div class="eyebrow" id="dateLabel">— loading —</div>
+  <div class="orb-wrap">
+    <div class="orb-ring"></div>
+    <div class="orb-ring r2"></div>
+    <div class="orb"></div>
+  </div>
+  <h1>Today, you get to<br><em>begin again.</em></h1>
+  <p class="sub">One quote, one short spark, one breath, one chant, one good thing — five minutes to reset before the day takes over.</p>
+</div>
+
+<main>
+
+  <section class="card" id="quoteCard">
+    <div class="card-label"><span class="num">01</span> Today's quote</div>
+    <p class="quote-text"><span class="quote-mark">“</span><span id="quoteText"></span><span class="quote-mark">”</span></p>
+    <div class="quote-actions">
+      <button class="btn-ghost" id="quoteShareBtn">Share as image</button>
+    </div>
+  </section>
+  <canvas id="shareCanvas" width="1080" height="1350" style="display:none;"></canvas>
+
+  <section class="card" id="speechCard">
+    <div class="card-label"><span class="num">02</span> Short spark · video summary</div>
+    <div class="speech-meta">
+      <h2 class="card-title" id="speechTitle" style="margin:0;"></h2>
+      <span class="time-badge" id="speechTime"></span>
+    </div>
+    <p class="speech-source" id="speechSource"></p>
+    <div class="speech-body" id="speechBody"></div>
+    <div class="try-box">
+      <div class="try-label">A small thing to try today</div>
+      <p id="speechTry"></p>
+    </div>
+    <div class="quote-actions">
+      <a class="yt-link" id="speechLink" href="#" target="_blank" rel="noopener">Watch the full video ↗</a>
+    </div>
+    <p class="source-note" id="speechNote"></p>
+    <p class="source-note">Short summaries of public videos, for general education only. Not medical or therapy advice. All credit to the creators.</p>
+  </section>
+
+  <section class="card" id="breatheCard">
+    <div class="card-label"><span class="num">03</span> Breathing exercise</div>
+    <h2 class="card-title">Give your nervous system sixty seconds</h2>
+    <div class="breathe-grid">
+      <div class="pattern-select" id="patternSelect"></div>
+      <div class="breathe-stage">
+        <div class="breathe-ring-static"></div>
+        <div class="breathe-circle" id="breatheCircle">
+          <span class="breathe-phase" id="breathePhase">ready</span>
+        </div>
+      </div>
+      <div class="breathe-controls">
+        <button class="btn-primary" id="breatheStart">Start breathing</button>
+        <button class="btn-ghost" id="breatheStop">Stop</button>
+      </div>
+      <div class="mono" id="cycleCount" style="font-size:12px; color:var(--ink-soft); opacity:0.7;"></div>
+    </div>
+  </section>
+
+  <section class="card" id="chantCard">
+    <div class="card-label"><span class="num">04</span> Chant &amp; calm tone</div>
+    <h2 class="card-title">A steady drone to settle into</h2>
+    <div class="chant-row">
+      <div class="chant-visual" id="chantVisual"></div>
+      <div>
+        <button class="btn-primary" id="chantToggle">Play tone</button>
+        <div class="volume-row">
+          <label for="chantVolume">VOLUME</label>
+          <input type="range" id="chantVolume" min="0" max="100" value="70">
+        </div>
+        <p style="font-size:12px; color:var(--ink-soft); opacity:0.75; margin:10px 0 0;">On iPhone: flip the side mute switch off and turn up media volume — the silent switch blocks web audio.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="goodCard">
+    <div class="card-label"><span class="num">05</span> Daily affirmation</div>
+    <div class="good-image-wrap" id="goodImage"></div>
+    <p class="affirmation-text" id="affirmationText"></p>
+    <p class="affirmation-hint">Read it slowly, out loud if you can. Then carry it into your day.</p>
+    <p class="source-note" id="goodImageCredit"></p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="fdate mono" id="footerDate"></div>
+  <div>Daily Spark refreshes automatically at midnight — bookmark this page and come back tomorrow.</div>
+  <div style="display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap;">
+    <button class="reload-btn" id="shuffleBtn">Shuffle today's picks</button>
+    <button class="reload-btn" id="shareBtn">Share Daily Spark</button>
+  </div>
+</footer>
+
+<script>
+/* ---------------- CONTENT LIBRARIES ---------------- */
+
+const QUOTES = [
+"Discipline is choosing between what you want now and what you want most.",
+"The days are long, but the compound interest of small effort is enormous.",
+"You don't need more time, you need to decide.",
+"Motivation gets you started. A system keeps you going.",
+"Nobody is coming to save you from the work — and that's the good news.",
+"Small and consistent beats big and occasional, every single time.",
+"Your future is built in the five minutes you almost skipped.",
+"Comfort is a loan against your potential, and it charges interest.",
+"You are one honest decision away from a different year.",
+"Progress hides inside the reps nobody claps for.",
+"The version of you that you're proud of is built one unremarkable Tuesday at a time.",
+"Energy follows attention. Point it somewhere worth building.",
+"You can't think your way into a new life. You act your way into one.",
+"Doubt kills more dreams than failure ever will.",
+"Start before you're ready. Ready is a myth you tell yourself to stay comfortable.",
+"The obstacle you're avoiding is usually the one thing standing between you and growth.",
+"Some days you show up motivated. Most days you just show up. Both count.",
+"Nothing is heavier than a good idea you never acted on.",
+"You are allowed to be a work in progress and still be proud of the work.",
+"The fastest way through fear is directly at it.",
+"Discomfort today is just tuition for the person you're becoming.",
+"Your habits are voting for who you'll be in five years. Vote wisely today.",
+"Stop waiting for certainty. Certainty is for people looking backward.",
+"A goal without a deadline is just a wish wearing a nice outfit.",
+"Consistency is the only kind of talent that never runs out.",
+"You don't rise to the level of your goals, you fall to the level of your systems.",
+"Every master was once a disaster who refused to quit.",
+"The best time to plant the tree was years ago. The second best time is this morning.",
+"Focus is saying no to a hundred good ideas so you can say yes to the right one.",
+"Your body keeps score of every promise you make to yourself. Keep more of them.",
+"Growth is uncomfortable by design — that's how you know it's working.",
+"The finish line moves. Enjoy the mile you're actually running.",
+"Nobody remembers your bad first draft. They remember that you finished.",
+"Confidence isn't the absence of fear, it's just proof you've done hard things before.",
+"You can't pour from an empty routine. Fill it before you empty yourself.",
+"What you tolerate, you train. What you train, you become.",
+"Rest is not the opposite of progress — burnout is.",
+"You are not behind. You are exactly where your effort has placed you, and that can change today.",
+"The plan doesn't need to be perfect. It needs to start.",
+"Big change is just small change, repeated until it isn't small anymore."
+];
+
+const VIDEOS = [
+ {
+  title:"The 2 Brain Habits That Prevent Mental Burnout",
+  time:"6 min video",
+  source:"Abhasa – Mental Health · YouTube",
+  body:[
+   "Deep burnout isn't only a shortage of physical energy. The video calls it a hardware problem, like a phone with 50 apps running in the background. A short vacation doesn't fix it, because the moment you're back, your brain's background processing goes straight into overtime again.",
+   "Habit 1: Cognitive offloading. Your brain is wired to obsess over unfinished business (the Zeigarnik effect). An unanswered email, a looming deadline, a conversation you're avoiding: your brain keeps those tabs open, even while you sleep, and they drain your mental battery.",
+   "The fix is a brain dump every night before you stop work. Write down every unfinished task, every worry and your plan for tomorrow, on paper. Once your brain trusts that it's safely recorded outside your head, it closes those tabs, and your nervous system can finally rest and repair overnight.",
+   "Habit 2: Strategic disengagement. When we're exhausted we scroll, watch videos or read the news. But that isn't real rest. You're swapping work stress for fast dopamine and more data to process.",
+   "Instead, give your brain small daily windows with zero input: a ten-minute walk without your phone, sitting outside looking at the sky, or letting your mind wander in silence. Just as silence creates the melody in music, silence in your day lets your brain recharge and build resilience to stress."
+  ],
+  tryIt:"Tonight, before you stop, write down everything unfinished and tomorrow's plan on paper. Tomorrow, take ten minutes with no phone and no input.",
+  url:"https://www.youtube.com/watch?v=QLJ1fASei2s",
+  linkText:"Watch the full video ↗"
+ },
+ {
+  title:"Passengers on the Bus: Stop Fighting Your Thoughts",
+  time:"~13 min video",
+  source:"Therapy in a Nutshell · Emma McAdam, LMFT · YouTube",
+  body:[
+   "Picture yourself as the driver of a bus. The bus is your life, and the passengers are your thoughts, feelings and memories. Some are kind. Others are loud, critical or scary. This exercise from Acceptance and Commitment Therapy (ACT), created by Dr. Steven Hayes, reminds you that you are the driver, not the passengers.",
+   "Most of us fight the loud passengers: arguing with them, trying to throw them off, or stopping the bus to keep them quiet. But the more you resist a thought, the louder it tends to get, and soon you're steering by it instead of toward what matters.",
+   "The alternative is to let them ride. Name your usual passengers (the Worry Wart, the Perfectionist), acknowledge them without arguing, and keep your hands on the wheel by driving in the direction of your values. A value is a direction, like heading north, not a destination.",
+   "In the example, a woman with social anxiety goes to the party anyway because she values connection. The anxious passengers come along, but over time they lose their grip. You don't have to control your thoughts to live a full life. You just keep driving."
+  ],
+  tryIt:"The next time a harsh thought shows up, give it a name and tell it you hear it, but you're still driving.",
+  url:"https://www.youtube.com/watch?v=IHOieCU4WQs",
+  linkText:"Watch the full video ↗"
+ },
+ {
+  title:"6 Phrases to Get Unstuck From Overthinking",
+  time:"short video",
+  source:"Therapy in a Nutshell · Emma McAdam, LMFT · YouTube",
+  body:[
+   "Your brain is a bit like a two-year-old: whatever gets your attention gets louder. Trying not to think about a worry, believing it, arguing with it, or distracting yourself from it all tend to make it grow.",
+   "ACT offers a different move called cognitive defusion, which just means putting a little space between you and the thought. You notice it, acknowledge it, and return to what you were doing, without agreeing, arguing or suppressing.",
+   "The phrases are playful and simple. Greet your mind politely and tell it you see it's worrying you again. Say 'maybe, maybe not, we'll see.' Give the recurring story a name, like 'the failure story.' Thank your mind for working so hard at worrying. Or ask yourself whether believing this thought will help you live the life you want.",
+   "The goal isn't to silence your thoughts. It's to stop feeding the struggle and get back to what matters, so the worries visit less often and bother you less."
+  ],
+  tryIt:"Pick one phrase and use it the next time a 'what if' appears, then go straight back to what you were doing.",
+  url:"https://www.youtube.com/watch?v=OAyuhfZ85nE",
+  linkText:"Watch the full video ↗"
+ },
+ {
+  title:"Make Peace With Your Feelings",
+  time:"~6 min",
+  source:"Therapy in a Nutshell · Emma McAdam, LMFT",
+  body:[
+   "When feelings get intense, we start to fear them, and then we dodge them by pushing them down, distracting ourselves, blaming, or staying busy. But running makes feelings bigger, the way sprinting down a dark street makes you feel more afraid, not less.",
+   "This short exercise flips that. Choose one small, recent feeling. Slow down, take a gentle breath, and notice the chair or floor holding you. Then get curious like an explorer: where do you feel it in your body? Does it have a temperature, a shape, a colour? Describe it instead of judging it.",
+   "The goal isn't to make the feeling go away, because that quietly teaches your brain it's dangerous. The goal is to show your mind that this feeling is uncomfortable, but not dangerous. When your mind chatters, thank it and come back to the body. Even a minute at a time, a few times a day, helps."
+  ],
+  tryIt:"Pick one small feeling right now and describe where it sits in your body for one minute, with no fixing.",
+  url:"https://therapyinanutshell.com/emotional-regulation/",
+  linkText:"Watch or read the full version ↗"
+ },
+ {
+  title:"Calming a Brain That Won't Switch Off",
+  time:"~14 min",
+  source:"Therapy in a Nutshell · Emma McAdam, LMFT",
+  body:[
+   "Ever feel on edge even when you're safe, scanning for problems, startled by small things, unable to relax? The video explains this as your brain's protective alarm staying on long after the danger has passed, like a smoke alarm that goes off for toast. The aim isn't to rip out the alarm, but to retrain it.",
+   "Three skills help. First, turn vague, constant worry into specific action: ask whether there is actually a fire, and if something can be done, take one concrete step. Second, scan for safety instead of danger. Pause, look around, notice small moments of good, and compare what you feared with what really happened.",
+   "Third, send your brain a safety message through your body: drop your shoulders, unclench your jaw, let your hands go loose, exhale slowly. The video also asks a hard question: does part of you believe worrying keeps you safe? Noticing that belief makes change easier."
+  ],
+  tryIt:"Right now: drop your shoulders, unclench your jaw, exhale slowly, and remind yourself you don't need to brace.",
+  url:"https://therapyinanutshell.com/hypervigilance-and-trauma/",
+  linkText:"Watch or read the full version ↗",
+  note:"If this sounds like your everyday life, a trauma-informed therapist can help."
+ },
+ {
+  title:"Never Give Your First Hour to Someone Else",
+  time:"short video",
+  source:"Raj Shamani · YouTube",
+  body:[
+   "The core message is simple: don't hand the first hour of your day to someone else's priorities. Reaching for your phone the moment you wake up puts you in a reactive state, where other people's emergencies, opinions and highlight reels set your mood before you've chosen your own priorities.",
+   "You don't need extreme routines like 4 a.m. wake-ups or ice baths. You just need intentional focus, and the video offers a simple three-part morning.",
+   "One: start in silence and set one priority. Spend a few quiet minutes with no screens, asking which single action would move your life forward most today. Two: invest in your body. Even five minutes of light stretching, walking or basic movement treats health as the foundation, not an afterthought.",
+   "Three: invest in your mind. Read a few pages, listen to a lesson, write, or practise a skill. Thirty focused minutes a day adds up to hundreds of hours over a year.",
+   "Most people fail because they rely on fleeting motivation or wait for a perfect Monday. So start small, even just keeping your phone away for the first 15 minutes, and build toward an hour. Small promises kept every morning build self-trust and self-respect, and over about 90 days you shift from being steered by circumstances to steering your own direction."
+  ],
+  tryIt:"Tomorrow, keep your phone away for the first 15 minutes. Spend a few quiet minutes choosing the one thing that matters most today.",
+  url:"https://www.youtube.com/watch?v=InzQ1kO6wpA",
+  linkText:"Watch the full video ↗"
+ },
+ {
+  title:"The 5-Minute Habit Before Sleep",
+  time:"short clip",
+  source:"Raj Shamani with Dr. Joe Dispenza · YouTube",
+  body:[
+   "This clip is about the minutes right before sleep. Instead of ten minutes on Instagram, where feeds shape how you think and feel, the speaker recommends spending that time on gratitude.",
+   "He also argues that constant digital stimulation crowds out independent thought and imagination. His antidote is unplugged time looking out at wide landscapes, like the sky, mountains or the sea, which he says helps an overstimulated mind calm down and organize itself over a few days.",
+   "As evening turns into sleep, he describes brain activity slowing from beta into alpha, theta and delta, and calls this a window when the line between conscious and subconscious processing opens up.",
+   "His suggestion is to use that window well: feel grateful, reflect on where you lost patience or reacted out of balance today, and mentally rehearse how you want to respond tomorrow. He says that after two to three weeks of doing this, people often notice calmer reactions."
+  ],
+  tryIt:"Tonight, put your phone down five minutes early. Name three things you're grateful for, then picture how you want to handle tomorrow's stress.",
+  url:"https://www.youtube.com/watch?v=XUvGaXnBtXE",
+  linkText:"Watch the full clip ↗",
+  note:"These are the speaker's own views, and some of his claims about brain waves are not settled science. The simple habit of evening gratitude and reflection is easy and low-risk to try."
+ }
+];
+
+const AFFIRMATIONS = [
+"I am enough.",
+"I am worthy of love and respect.",
+"I choose peace over worry today.",
+"I am capable of handling whatever comes my way.",
+"I trust myself to make good decisions.",
+"Every day I grow stronger and wiser.",
+"I deserve good things.",
+"I choose happiness today.",
+"I release what I cannot control.",
+"I am grateful for everything I have.",
+"My potential is limitless.",
+"I am doing my best, and that is enough.",
+"I attract positive people and good energy.",
+"I am becoming the best version of myself.",
+"I forgive myself and let go of the past.",
+"I am calm, centered, and focused.",
+"I believe in my ability to succeed.",
+"I welcome change and new opportunities.",
+"I am resilient. Challenges make me stronger.",
+"My mistakes do not define me.",
+"I speak to myself with kindness.",
+"I have the courage to start.",
+"I am proud of how far I have come.",
+"Today I choose progress over perfection.",
+"I am surrounded by love and support.",
+"I let go of fear and embrace confidence.",
+"I am healthy, strong, and full of energy.",
+"I make a positive difference in the world.",
+"I am open to receiving abundance.",
+"I breathe in calm and breathe out tension.",
+"I am exactly where I need to be.",
+"I have everything I need within me.",
+"I focus on what I can control.",
+"I deserve rest without guilt.",
+"I am allowed to take up space.",
+"I trust the timing of my life.",
+"Small steps still move me forward.",
+"I am worthy of success and happiness.",
+"I radiate confidence and positivity.",
+"I let my actions reflect my values.",
+"I am patient with myself.",
+"Good things are coming my way.",
+"I am open to new opportunities.",
+"I choose thoughts that uplift me.",
+"I am proud of my effort, not just my results.",
+"I am free to set boundaries.",
+"I am growing through what I go through.",
+"My voice matters.",
+"I bring something unique to the world.",
+"I am at peace with who I am becoming.",
+"I act with courage even when I feel unsure.",
+"I celebrate my small wins.",
+"I am safe, and I am steady.",
+"Today is full of possibility.",
+"I choose to see the good in this day.",
+"I give myself permission to rest and recharge.",
+"I am disciplined, focused, and consistent.",
+"I am deserving of my dreams.",
+"I let go of comparison and run my own race.",
+"I am thankful for this moment.",
+"I am whole, just as I am."
+];
+
+// Picks a random entry while avoiding whatever was shown in the last few visits,
+// so nothing repeats noticeably even without any external content source.
+function pickFresh(arr, storageKey, historySize){
+  let history = [];
+  try{ history = JSON.parse(localStorage.getItem(storageKey) || '[]'); }catch(e){ history = []; }
+  let available = arr.map((_, i) => i).filter(i => !history.includes(i));
+  if(!available.length){ available = arr.map((_, i) => i); history = []; }
+  const chosen = available[Math.floor(Math.random() * available.length)];
+  history.push(chosen);
+  if(history.length > historySize) history.shift();
+  try{ localStorage.setItem(storageKey, JSON.stringify(history)); }catch(e){ /* storage unavailable — fine, just less variety tracking */ }
+  return arr[chosen];
+}
+
+const BREATH_PATTERNS = {
+  box:    {label:"Box breathing", phases:[["Inhale",4],["Hold",4],["Exhale",4],["Hold",4]]},
+  calm478:{label:"4-7-8 calm", phases:[["Inhale",4],["Hold",7],["Exhale",8]]},
+  reset:  {label:"Quick reset", phases:[["Inhale",4],["Exhale",6]]}
+};
+
+/* ---------------- DATE-BASED ROTATION ---------------- */
+const dayIndex = Math.floor(Date.now() / 86400000);
+function pick(arr, seedOffset){ return arr[(dayIndex + seedOffset) % arr.length]; }
+
+const today = new Date();
+const dateStr = today.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+document.getElementById('dateLabel').textContent = dateStr.toUpperCase();
+document.getElementById('footerDate').textContent = dateStr;
+
+let quoteSeed = 0;
+
+function renderQuote(){
+  document.getElementById('quoteText').textContent = pick(QUOTES, quoteSeed);
+}
+
+function renderSpeech(random){
+  // One video summary per local day; Shuffle jumps to a different one.
+  let idx = localDayNum() % VIDEOS.length;
+  if(random){
+    idx = (idx + 1 + Math.floor(Math.random() * (VIDEOS.length - 1))) % VIDEOS.length;
+  }
+  const v = VIDEOS[idx];
+  document.getElementById('speechTitle').textContent = v.title;
+  document.getElementById('speechTime').textContent = v.time;
+  document.getElementById('speechSource').textContent = v.source;
+  document.getElementById('speechBody').innerHTML = v.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('speechTry').textContent = v.tryIt;
+  const link = document.getElementById('speechLink');
+  link.href = v.url;
+  link.textContent = v.linkText;
+  document.getElementById('speechNote').textContent = v.note || '';
+}
+
+function renderGood(random){
+  // Same affirmation all day, a new one at local midnight.
+  const localDayNumber = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+  document.getElementById('affirmationText').textContent = AFFIRMATIONS[localDayNumber % AFFIRMATIONS.length];
+  loadGoodImage(!!random);
+}
+
+// Today's picture is drawn right here in the page (no image download, no
+// third-party service), so it can never fail to load. Six scenes rotate by
+// day, and each day also shifts details like the sun, moon and stars.
+function localDayNum(){
+  return Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+}
+function makeRng(seed){
+  let a = Math.floor(seed) >>> 0;
+  return function(){
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function starsSvg(r, n, maxY){
+  let out = '';
+  for(let i = 0; i < n; i++){
+    out += `<circle cx="${(r() * 1080).toFixed(0)}" cy="${(r() * maxY).toFixed(0)}" r="${(0.8 + r() * 1.8).toFixed(1)}" fill="#FCFBF8" opacity="${(0.4 + r() * 0.6).toFixed(2)}"/>`;
+  }
+  return out;
+}
+const SVG_OPEN = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 608" preserveAspectRatio="xMidYMid slice" role="img" aria-label="';
+
+const SCENES = [
+  { name: "Sunrise over the mountains", draw: (r) => {
+    const sx = Math.round(380 + r() * 320);
+    return SVG_OPEN + `Sunrise over the mountains"><defs>
+<linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="0.5" stop-color="#4A4A8C"/><stop offset="0.8" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<radialGradient id="s1"><stop offset="0" stop-color="#FFD59E" stop-opacity="0.9"/><stop offset="1" stop-color="#FFD59E" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g1)"/>${starsSvg(r, 40, 220)}
+<circle cx="${sx}" cy="400" r="190" fill="url(#s1)"/><circle cx="${sx}" cy="400" r="64" fill="#FFE7BF"/>
+<path d="M0 440 L130 340 L250 410 L400 300 L560 420 L700 330 L850 430 L980 350 L1080 410 V608 H0Z" fill="#3A3F7A" opacity="0.85"/>
+<path d="M0 500 L170 400 L320 480 L480 380 L640 490 L800 400 L960 480 L1080 430 V608 H0Z" fill="#232A5C"/>
+<path d="M0 560 L200 480 L380 550 L560 470 L760 550 L940 490 L1080 540 V608 H0Z" fill="#141A31"/></svg>`;
+  }},
+  { name: "Moonlight on still water", draw: (r) => {
+    const mx = Math.round(600 + r() * 280);
+    let refl = '';
+    for(let i = 0; i < 6; i++){
+      refl += `<rect x="${mx - 50 + i * 6}" y="${402 + i * 26}" width="${100 - i * 12}" height="4" rx="2" fill="#FCFBF8" opacity="${(0.5 - i * 0.07).toFixed(2)}"/>`;
+    }
+    return SVG_OPEN + `Moonlight on still water"><defs>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1330"/><stop offset="1" stop-color="#2A3364"/></linearGradient>
+<linearGradient id="w2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="1" stop-color="#0B0E24"/></linearGradient>
+<radialGradient id="m2"><stop offset="0" stop-color="#FCFBF8" stop-opacity="0.5"/><stop offset="1" stop-color="#FCFBF8" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g2)"/>${starsSvg(r, 90, 340)}
+<circle cx="${mx}" cy="170" r="130" fill="url(#m2)"/><circle cx="${mx}" cy="170" r="58" fill="#FCFBF8"/>
+<rect y="380" width="1080" height="228" fill="url(#w2)"/>${refl}
+<path d="M0 380 L0 345 Q150 305 300 345 T620 340 T1080 335 V380Z" fill="#0B0E24"/></svg>`;
+  }},
+  { name: "Golden hour at sea", draw: (r) => {
+    const sx = Math.round(400 + r() * 280);
+    let waves = '', glints = '';
+    for(let i = 0; i < 9; i++){
+      waves += `<path d="M0 ${365 + i * 24} q135 -8 270 0 t270 0 t270 0 t270 0" stroke="#FFE7BF" stroke-opacity="${(0.28 - i * 0.025).toFixed(2)}" stroke-width="2" fill="none"/>`;
+    }
+    for(let i = 0; i < 6; i++){
+      glints += `<rect x="${sx - 70 + i * 8}" y="${352 + i * 28}" width="${140 - i * 16}" height="5" rx="2.5" fill="#FFE7BF" opacity="${(0.7 - i * 0.1).toFixed(2)}"/>`;
+    }
+    return SVG_OPEN + `Golden hour at sea"><defs>
+<linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3364"/><stop offset="0.6" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<linearGradient id="w3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB27A"/><stop offset="0.35" stop-color="#3A3F7A"/><stop offset="1" stop-color="#141A31"/></linearGradient>
+<clipPath id="c3"><rect width="1080" height="340"/></clipPath></defs>
+<rect width="1080" height="340" fill="url(#g3)"/><circle cx="${sx}" cy="340" r="86" fill="#FFE7BF" clip-path="url(#c3)"/>
+<rect y="340" width="1080" height="268" fill="url(#w3)"/>${waves}${glints}</svg>`;
+  }},
+  { name: "A lone tree at dawn", draw: (r) => {
+    const tx = Math.round(640 + r() * 200);
+    const sx = Math.round(230 + r() * 260);
+    return SVG_OPEN + `A lone tree at dawn"><defs>
+<linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3364"/><stop offset="0.55" stop-color="#FF8F5E"/><stop offset="1" stop-color="#FFD59E"/></linearGradient>
+<radialGradient id="s4"><stop offset="0" stop-color="#FFE7BF" stop-opacity="0.85"/><stop offset="1" stop-color="#FFE7BF" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g4)"/>
+<circle cx="${sx}" cy="340" r="200" fill="url(#s4)"/><circle cx="${sx}" cy="340" r="80" fill="#FFE7BF"/>
+<path d="M0 480 Q300 420 640 465 T1080 450 V608 H0Z" fill="#3A3F7A" opacity="0.8"/>
+<rect x="${tx - 6}" y="385" width="12" height="90" fill="#141A31"/>
+<circle cx="${tx}" cy="350" r="50" fill="#141A31"/><circle cx="${tx - 36}" cy="376" r="35" fill="#141A31"/><circle cx="${tx + 36}" cy="376" r="35" fill="#141A31"/>
+<path d="M0 500 Q300 440 640 485 T1080 470 V608 H0Z" fill="#141A31"/>
+<path d="M200 150 q10 -10 20 0 q10 -10 20 0 M260 185 q8 -8 16 0 q8 -8 16 0 M330 140 q7 -7 14 0 q7 -7 14 0" stroke="#141A31" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+  }},
+  { name: "Pines in the evening mist", draw: (r) => {
+    const colors = ['#4A5C80', '#2C3C63', '#141A31'];
+    let forest = '';
+    for(let row = 0; row < 3; row++){
+      const base = 420 + row * 62;
+      for(let i = 0; i < 16; i++){
+        const x = (i + 0.2 + r() * 0.6) * (1080 / 15) - 20;
+        const h = 90 + row * 28 + r() * 40;
+        const w = h * 0.32;
+        forest += `<path d="M${x.toFixed(0)} ${(base - h).toFixed(0)} L${(x - w).toFixed(0)} ${base} L${(x + w).toFixed(0)} ${base}Z" fill="${colors[row]}"/>`;
+      }
+      forest += `<rect y="${base - 2}" width="1080" height="${608 - base + 2}" fill="${colors[row]}"/>`;
+      if(row < 2) forest += `<rect y="${base - 70}" width="1080" height="110" fill="url(#mist5)"/>`;
+    }
+    return SVG_OPEN + `Pines in the evening mist"><defs>
+<linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="0.6" stop-color="#6A4F86"/><stop offset="1" stop-color="#FFB27A"/></linearGradient>
+<linearGradient id="mist5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCFBF8" stop-opacity="0"/><stop offset="1" stop-color="#FCFBF8" stop-opacity="0.16"/></linearGradient></defs>
+<rect width="1080" height="608" fill="url(#g5)"/>${starsSvg(r, 30, 200)}
+<circle cx="${Math.round(300 + r() * 480)}" cy="170" r="36" fill="#FFE7BF" opacity="0.92"/>${forest}</svg>`;
+  }},
+  { name: "The lighthouse at twilight", draw: (r) => {
+    return SVG_OPEN + `The lighthouse at twilight"><defs>
+<linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1330"/><stop offset="0.6" stop-color="#2A3364"/><stop offset="1" stop-color="#FF8F5E"/></linearGradient>
+<linearGradient id="w6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2340"/><stop offset="1" stop-color="#0B0E24"/></linearGradient>
+<linearGradient id="b6" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#FFD59E" stop-opacity="0.6"/><stop offset="1" stop-color="#FFD59E" stop-opacity="0"/></linearGradient>
+<radialGradient id="l6"><stop offset="0" stop-color="#FFE7BF" stop-opacity="0.9"/><stop offset="1" stop-color="#FFE7BF" stop-opacity="0"/></radialGradient></defs>
+<rect width="1080" height="608" fill="url(#g6)"/>${starsSvg(r, 70, 300)}
+<rect y="430" width="1080" height="178" fill="url(#w6)"/>
+<path d="M860 242 L0 ${150 + Math.round(r() * 40)} L0 ${300 + Math.round(r() * 40)}Z" fill="url(#b6)"/>
+<circle cx="860" cy="242" r="60" fill="url(#l6)"/>
+<path d="M700 608 L760 470 L860 430 L960 470 L1010 608Z" fill="#141A31"/>
+<path d="M833 430 L852 250 L868 250 L887 430Z" fill="#FCFBF8"/>
+<path d="M843.6 330 L876.4 330 L880.7 370 L839.3 370Z" fill="#FF8F5E"/>
+<rect x="848" y="232" width="24" height="20" fill="#FFD59E"/><path d="M844 232 L860 214 L876 232Z" fill="#141A31"/></svg>`;
+  }}
+];
+
+function loadGoodImage(random){
+  const idx = random ? Math.floor(Math.random() * SCENES.length) : localDayNum() % SCENES.length;
+  const seed = random ? Math.random() * 1e9 : localDayNum() * 9973 + 7;
+  const scene = SCENES[idx];
+  document.getElementById('goodImage').innerHTML = scene.draw(makeRng(seed));
+  document.getElementById('goodImageCredit').textContent = scene.name;
+}
+
+renderQuote(); renderSpeech(); renderGood();
+
+/* ---------------- THEME TOGGLE ---------------- */
+(function themeInit(){
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  const saved = localStorage.getItem('ds_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('ds_theme', next);
+    applyTheme(next);
+  });
+})();
+
+/* ---------------- SHAREABLE QUOTE IMAGE ---------------- */
+(function shareImageInit(){
+  const btn = document.getElementById('quoteShareBtn');
+  if(!btn) return;
+
+  function wrapText(ctx, text, maxWidth){
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    words.forEach(w => {
+      const test = line ? line + ' ' + w : w;
+      if(ctx.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = w;
+      } else {
+        line = test;
+      }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  async function generateImage(){
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    await document.fonts.ready;
+
+    const bg = ctx.createRadialGradient(W/2, 0, W*0.1, W/2, H*0.55, H*0.95);
+    bg.addColorStop(0, '#2A3364');
+    bg.addColorStop(0.45, '#1B2340');
+    bg.addColorStop(1, '#12142A');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const glow = ctx.createLinearGradient(0, H*0.62, 0, H);
+    glow.addColorStop(0, 'rgba(255,143,94,0)');
+    glow.addColorStop(1, 'rgba(255,213,158,0.22)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, H*0.62, W, H*0.38);
+
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = '#FFD59E';
+    ctx.font = "600 26px 'IBM Plex Mono', monospace";
+    ctx.fillText('✨  D A I L Y   S P A R K', W/2, 130);
+
+    const englishText = '“' + document.getElementById('quoteText').textContent + '”';
+    const maxWidth = W - 170;
+
+    ctx.fillStyle = '#FCFBF8';
+    ctx.font = "italic 500 54px 'Fraunces', serif";
+    const enLines = wrapText(ctx, englishText, maxWidth);
+
+    const enLineHeight = 70;
+    const footerGap = 60;
+    const totalHeight = (enLines.length * enLineHeight) + footerGap;
+    let cursorY = (H/2) - (totalHeight/2);
+
+    enLines.forEach(line => { cursorY += enLineHeight; ctx.fillText(line, W/2, cursorY); });
+
+    ctx.fillStyle = 'rgba(252,251,248,0.5)';
+    ctx.font = "500 20px 'IBM Plex Mono', monospace";
+    ctx.fillText('a five-minute daily reset', W/2, H - 64);
+
+    return canvas;
+  }
+
+  btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    btn.textContent = "Generating…";
+    btn.disabled = true;
+    try{
+      const canvas = await generateImage();
+      canvas.toBlob(async (blob) => {
+        if(!blob){ btn.textContent = original; btn.disabled = false; return; }
+        const file = new File([blob], 'daily-spark-quote.png', { type: 'image/png' });
+        let shared = false;
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          try{
+            await navigator.share({ files:[file], title:'Daily Spark', text: document.getElementById('quoteText').textContent });
+            shared = true;
+          }catch(e){ /* user cancelled the share sheet */ }
+        }
+        if(!shared){
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'daily-spark-quote.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+        btn.textContent = original;
+        btn.disabled = false;
+      }, 'image/png');
+    }catch(e){
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+})();
+
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  quoteSeed = Math.floor(Math.random()*1000);
+  renderQuote(); renderSpeech(true); renderGood(true);
+});
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareData = {
+    title: "Daily Spark",
+    text: "A quiet five-minute reset — quote, breathing, and a good thing happening today.",
+    url: window.location.href
+  };
+  const btn = document.getElementById('shareBtn');
+  try{
+    if(navigator.share){
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      const original = btn.textContent;
+      btn.textContent = "Link copied!";
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    }
+  } catch(e){ /* user cancelled share sheet — no action needed */ }
+});
+
+/* ---------------- BREATHING EXERCISE ---------------- */
+const patternSelect = document.getElementById('patternSelect');
+let currentPattern = 'box';
+Object.keys(BREATH_PATTERNS).forEach(key => {
+  const btn = document.createElement('button');
+  btn.className = 'pattern-btn' + (key === currentPattern ? ' active' : '');
+  btn.textContent = BREATH_PATTERNS[key].label;
+  btn.dataset.key = key;
+  btn.addEventListener('click', () => {
+    currentPattern = key;
+    [...patternSelect.children].forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    stopBreathing();
+  });
+  patternSelect.appendChild(btn);
+});
+
+const circle = document.getElementById('breatheCircle');
+const phaseLabel = document.getElementById('breathePhase');
+const cycleCountLabel = document.getElementById('cycleCount');
+let breatheTimer = null;
+let breathePhaseIdx = 0;
+let cycleCount = 0;
+
+function runBreathPhase(){
+  const pattern = BREATH_PATTERNS[currentPattern];
+  const [name, duration] = pattern.phases[breathePhaseIdx];
+  phaseLabel.textContent = name;
+  circle.style.transition = `transform ${duration}s ease-in-out`;
+  if(name === "Inhale") circle.style.transform = "scale(1.55)";
+  else if(name === "Exhale") circle.style.transform = "scale(0.7)";
+  breatheTimer = setTimeout(() => {
+    breathePhaseIdx = breathePhaseIdx + 1;
+    if(breathePhaseIdx >= pattern.phases.length){
+      breathePhaseIdx = 0;
+      cycleCount++;
+      cycleCountLabel.textContent = cycleCount === 1 ? "1 cycle complete" : `${cycleCount} cycles complete`;
+    }
+    runBreathPhase();
+  }, duration * 1000);
+}
+function startBreathing(){
+  stopBreathing();
+  breathePhaseIdx = 0;
+  cycleCount = 0;
+  cycleCountLabel.textContent = "";
+  runBreathPhase();
+}
+function stopBreathing(){
+  clearTimeout(breatheTimer);
+  circle.style.transition = "transform 0.6s ease";
+  circle.style.transform = "scale(1)";
+  phaseLabel.textContent = "ready";
+}
+document.getElementById('breatheStart').addEventListener('click', startBreathing);
+document.getElementById('breatheStop').addEventListener('click', stopBreathing);
+
+/* ---------------- CHANT / CALM TONE (Web Audio, generated) ---------------- */
+let audioCtx = null;
+let chantNodes = [];
+let chantPlaying = false;
+const chantBtn = document.getElementById('chantToggle');
+const chantVisual = document.getElementById('chantVisual');
+const volumeSlider = document.getElementById('chantVolume');
+
+function targetGain(){
+  return (volumeSlider.value / 100) * 0.5;
+}
+function startChant(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  // iOS/Safari suspends new audio contexts until explicitly resumed inside a user gesture.
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+
+  const masterGain = audioCtx.createGain();
+  const now = audioCtx.currentTime;
+  masterGain.gain.setValueAtTime(0, now);
+  masterGain.gain.linearRampToValueAtTime(targetGain(), now + 1.2); // fade in, avoids clicks
+  masterGain.connect(audioCtx.destination);
+
+  const freqs = [136.1, 204.15, 272.2]; // Om-style fundamental + harmonics
+  chantNodes = freqs.map((f, i) => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    const gain = audioCtx.createGain();
+    gain.gain.value = i === 0 ? 1 : 0.35;
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    return osc;
+  });
+  chantNodes.masterGain = masterGain;
+  chantPlaying = true;
+  chantBtn.textContent = "Stop tone";
+  chantVisual.classList.add('playing');
+}
+function stopChant(){
+  if(chantNodes.masterGain && audioCtx){
+    const now = audioCtx.currentTime;
+    const g = chantNodes.masterGain.gain;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(0, now + 0.4); // fade out, avoids clicks
+  }
+  const nodesToStop = chantNodes;
+  setTimeout(() => { nodesToStop.forEach(n => { try{ n.stop(); }catch(e){} }); }, 450);
+  chantNodes = [];
+  chantPlaying = false;
+  chantBtn.textContent = "Play tone";
+  chantVisual.classList.remove('playing');
+}
+chantBtn.addEventListener('click', () => { chantPlaying ? stopChant() : startChant(); });
+volumeSlider.addEventListener('input', () => {
+  if(chantNodes.masterGain && audioCtx) chantNodes.masterGain.gain.setTargetAtTime(targetGain(), audioCtx.currentTime, 0.05);
+});
+</script>
+</body>
+</html>
